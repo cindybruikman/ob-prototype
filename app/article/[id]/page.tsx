@@ -34,16 +34,14 @@ export default function ArticlePage() {
         description: "De link naar dit artikel is gekopieerd naar je klembord.",
       });
     } catch {
-      toast({
-        title: "Delen lukt niet",
+      toast("Delen lukt niet", {
         description: "Kopiëren naar klembord is niet gelukt op dit apparaat.",
       });
     }
   };
 
   const handleBookmark = () => {
-    toast({
-      title: "Opgeslagen",
+    toast("Artikel opgeslagen", {
       description: "Artikel toegevoegd aan je opgeslagen artikelen.",
     });
   };
