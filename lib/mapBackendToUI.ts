@@ -26,7 +26,9 @@ export function mapBackendToUI(a: BackendArticle): UIArticle {
   return {
     id: a._id,
     title: a.title,
-    summary: a.aiSummary || a.teaser,
+    summary:
+      (Array.isArray(a.aiSummary) ? a.aiSummary.join(" ") : a.aiSummary) ||
+      a.teaser,
     keyPoints: a.aiKeyPoints || [],
     fullContent,
     location: a.regionName,
