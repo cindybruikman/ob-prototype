@@ -3,24 +3,27 @@
 import { useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
+import { toast } from "sonner";
 
 import { ArticleContent } from "@/components/news/ArticleContent";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { Button } from "@/components/ui/button";
-import { mockArticles } from "@/lib/mockData";
-import { toast } from "sonner";
+
+import { backendMockArticles } from "@/lib/mockDataBackend";
+import { mapBackendToUI } from "@/lib/mapBackendToUI";
 
 export default function ArticlePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  toast("Link gekopieerd", {
-    description: "De link naar dit artikel is gekopieerd naar je klembord.",
-  });
 
+  // ✅ Gebruik de gemapte UI-artikelen (die hebben "id", "summary", "keyPoints", etc.)
   const article = useMemo(() => {
     const id = params?.id;
-    return mockArticles.find((a) => a.id === id);
-  }, [params]);
+    if (!id) return null;
+
+    const uiArticles = backendMockArticles.map(mapBackendToUI);
+    return uiArticles.find((a) => a.id === id) ?? null;
+  }, [params?.id]);
 
   const handleShare = async () => {
     try {
@@ -79,6 +82,7 @@ export default function ArticlePage() {
 
       {/* Content */}
       <main className="px-4 py-4">
+        {/* ✅ propnaam is "article", niet "articles" */}
         <ArticleContent article={article} />
       </main>
 
