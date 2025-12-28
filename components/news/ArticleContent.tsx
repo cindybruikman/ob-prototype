@@ -97,7 +97,7 @@ export function ArticleContent({ article }: ArticleContentProps) {
                 viewMode === "full" ? "bg-primary" : "hover:bg-white/5"
               )}
             >
-              Volledig artikel
+              Geheel artikel
             </button>
           </div>
         </div>
