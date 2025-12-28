@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MapPin, Clock, Volume2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { Article } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ interface ArticleContentProps {
 type ViewMode = "keypoints" | "summary" | "full";
 
 export function ArticleContent({ article }: ArticleContentProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("keypoints");
+  const [viewMode, setViewMode] = useState<ViewMode>("full");
 
   return (
     <div className="space-y-6">
@@ -60,12 +61,50 @@ export function ArticleContent({ article }: ArticleContentProps) {
       {/* View Mode Tabs */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">
-            Kies jouw versie
-          </span>
+          <span className="text-sm text-white">Kies jouw versie</span>
+        </div>
+        {/*TEST */}
+
+        <div className="space-y-2">
+          <div className="inline-flex rounded-xl border border-white p-1">
+            {/* Kernpunten */}
+            <button
+              onClick={() => setViewMode("keypoints")}
+              className={cn(
+                "px-4 py-2 text-sm rounded-md transition-colors text-white",
+                viewMode === "keypoints" ? "bg-primary" : "hover:bg-white/5"
+              )}
+            >
+              Kernpunten
+            </button>
+
+            {/* Samenvatting */}
+            <button
+              onClick={() => setViewMode("summary")}
+              className={cn(
+                "px-4 py-2 text-sm rounded-md transition-colors text-white",
+                viewMode === "summary" ? "bg-primary" : "hover:bg-white/5"
+              )}
+            >
+              Samenvatting
+            </button>
+
+            {/* Volledig artikel */}
+            <button
+              onClick={() => setViewMode("full")}
+              className={cn(
+                "px-4 py-2 text-sm rounded-md transition-colors text-white",
+                viewMode === "full" ? "bg-primary" : "hover:bg-white/5"
+              )}
+            >
+              Volledig artikel
+            </button>
+          </div>
         </div>
 
-        <div className="flex gap-2">
+        {/*TEST */}
+
+        {/* <div className="flex gap-2">
           <Button
             variant={viewMode === "keypoints" ? "pillActive" : "pill"}
             size="pill"
@@ -90,7 +129,7 @@ export function ArticleContent({ article }: ArticleContentProps) {
           >
             Volledig artikel
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Content Based on View Mode */}
