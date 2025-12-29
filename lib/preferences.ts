@@ -1,6 +1,15 @@
-export interface UserPreferences {
-  locations: string[];
+export type LocationLabel = "Woonplaats" | "Werk" | "Anders";
+
+export interface SavedLocation {
+  id: string; // "current" of bijv. "tilburg"
+  name: string; // "Huidige locatie" / "Tilburg"
   radius: number;
+  label: LocationLabel;
+  source: "current" | "region";
+}
+
+export interface UserPreferences {
+  savedLocations: SavedLocation[];
   useCurrentLocation: boolean;
   hasCompletedSetup: boolean;
 }
@@ -8,8 +17,7 @@ export interface UserPreferences {
 const STORAGE_KEY = "news-app-preferences";
 
 const defaultPreferences: UserPreferences = {
-  locations: [],
-  radius: 15,
+  savedLocations: [],
   useCurrentLocation: false,
   hasCompletedSetup: false,
 };
@@ -49,16 +57,23 @@ export function resetPreferences() {
   window.localStorage.removeItem(STORAGE_KEY);
 }
 
+/**
+ * Filter op basis van gekozen locaties.
+ * - Als er geen savedLocations zijn: alles tonen.
+ * - Anders: match op artikel.location (zoals "Tilburg", "Eindhoven", etc.)
+ */
 export function filterArticlesByPreferences<T extends { location: string }>(
   articles: T[],
   prefs: UserPreferences
 ): T[] {
-  if (!prefs.locations || prefs.locations.length === 0) {
-    return articles;
-  }
+  const picked = prefs.savedLocations
+    .filter((l) => l.source === "region")
+    .map((l) => l.name);
+
+  if (picked.length === 0) return articles;
 
   return articles.filter((article) =>
-    prefs.locations.some((loc) =>
+    picked.some((loc) =>
       article.location.toLowerCase().includes(loc.toLowerCase())
     )
   );
