@@ -96,9 +96,24 @@ export default function VoorMijPage() {
       <div className="px-4 pt-3">
         <Link
           href="/weekly"
-          className="inline-flex items-center justify-center rounded-full border border-white/30 px-4 py-2 text-sm text-white hover:bg-white/5 transition"
+          className="block rounded-xl border border-white/20 bg-card p-4 hover:bg-white/5 transition"
         >
-          Bekijk weekly recap
+          <div className="flex items-start gap-3">
+            {/* <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+              🗞️
+            </div> */}
+
+            <div className="flex-1">
+              <h3 className="font-semibold text-white">Jouw weekly recap</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Het belangrijkste nieuws van jouw regio’s, in één overzicht.
+              </p>
+
+              <span className="inline-block mt-2 text-sm text-primary font-medium">
+                Bekijk overzicht →
+              </span>
+            </div>
+          </div>
         </Link>
       </div>
 
