@@ -103,7 +103,7 @@ export default function VoorMijPage() {
         </div>
       </header>
 
-      <main className="px-4 py-4 space-y-4">
+      <main className="">
         {filteredArticles.length > 0 ? (
           filteredArticles.map((article) => (
             <NewsCard
