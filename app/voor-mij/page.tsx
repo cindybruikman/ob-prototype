@@ -14,10 +14,9 @@ import { getPreferences, type UserPreferences } from "@/lib/preferences";
 
 export default function VoorMijPage() {
   const router = useRouter();
-
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
 
-  // 1) pas op: localStorage => alleen client
+  // 1) localStorage => alleen client
   useEffect(() => {
     const prefs = getPreferences();
     setPreferences(prefs);
@@ -27,28 +26,18 @@ export default function VoorMijPage() {
     }
   }, [router]);
 
-  // 2) articles uit "backend mock" -> UI model
-  const articles = useMemo(() => {
-    return backendMockArticles.map(mapBackendToUI);
-  }, []);
+  // 2) backend mock -> UI model
+  const articles = useMemo(() => backendMockArticles.map(mapBackendToUI), []);
 
   // 3) filter op savedLocations
   const filteredArticles = useMemo(() => {
     if (!preferences) return [];
 
-    // als niets gekozen is: laat alles zien (of kies jouw gewenste gedrag)
-    if (
-      !preferences.savedLocations ||
-      preferences.savedLocations.length === 0
-    ) {
-      return articles;
-    }
-
-    const selectedNames = preferences.savedLocations
-      .filter((l) => l.source === "region") // regio’s
+    const selectedNames = (preferences.savedLocations ?? [])
+      .filter((l) => l.source === "region")
       .map((l) => l.name.toLowerCase());
 
-    // als live locatie aan staat maar nog geen regio’s: toon alles (prototype)
+    // niets gekozen => alles tonen (prototype)
     if (selectedNames.length === 0) return articles;
 
     return articles.filter((a) =>
@@ -56,22 +45,21 @@ export default function VoorMijPage() {
     );
   }, [articles, preferences]);
 
-  // 4) label in header
-  const locationLabel = useMemo(() => {
-    if (!preferences) return "Laden…";
-
-    if (
-      !preferences.savedLocations ||
-      preferences.savedLocations.length === 0
-    ) {
-      return "Alle locaties";
-    }
-
-    // toon bijv: "Woonplaats: Tilburg (15km), Werk: Eindhoven (25km)"
-    return preferences.savedLocations
-      .map((l) => `${l.label}: ${l.name} (${l.radius} km)`)
-      .join(" • ");
+  // 4) header labels: pas berekenen als preferences bestaat
+  const regionLocations = useMemo(() => {
+    if (!preferences) return [];
+    return (preferences.savedLocations ?? []).filter(
+      (l) => l.source === "region"
+    );
   }, [preferences]);
+
+  const locationLabel =
+    regionLocations.length > 0
+      ? regionLocations.map((l) => l.name).join(", ")
+      : "Alle locaties";
+
+  const radiusLabel =
+    regionLocations.length === 1 ? `${regionLocations[0].radius} km` : "";
 
   if (!preferences) {
     return (
@@ -99,10 +87,22 @@ export default function VoorMijPage() {
           >
             <MapPin className="w-4 h-4" />
             {locationLabel}
+            {radiusLabel ? ` • ${radiusLabel}` : ""}
           </Link>
         </div>
       </header>
 
+      {/* Weekly recap knop (netjes met padding/spacing) */}
+      <div className="px-4 pt-3">
+        <Link
+          href="/weekly"
+          className="inline-flex items-center justify-center rounded-full border border-white/30 px-4 py-2 text-sm text-white hover:bg-white/5 transition"
+        >
+          Bekijk weekly recap
+        </Link>
+      </div>
+
+      {/* Compact cards, zelfde als Home */}
       <main className="">
         {filteredArticles.length > 0 ? (
           filteredArticles.map((article) => (
