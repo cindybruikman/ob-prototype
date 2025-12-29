@@ -1,6 +1,5 @@
 import type { BackendArticle } from "@/lib/mockDataBackend";
 
-// Dit is het format dat jouw bestaande UI gebruikt (NewsCard, ArticleContent, etc.)
 export type UIArticle = {
   id: string;
   title: string;
@@ -16,27 +15,83 @@ export type UIArticle = {
   isTrending?: boolean;
 };
 
+function pickString(...values: Array<unknown>): string {
+  for (const v of values) {
+    if (typeof v === "string" && v.trim().length > 0) return v.trim();
+  }
+  return "";
+}
+
+function pickImageUrl(a: any): string {
+  // meest voorkomende vormen
+  return pickString(
+    a?.imageUrl,
+    a?.image?.url,
+    a?.image?.src,
+    a?.image?.variants?.["768x432"],
+    a?.image?.variants?.["original"],
+    a?.heroImageUrl
+  );
+}
+
+function pickRegionName(a: any): string {
+  return pickString(
+    a?.regionName,
+    a?.region,
+    a?.location,
+    a?.region?.name,
+    a?.region?.title
+  );
+}
+
+function pickTheme(a: any): string {
+  return pickString(
+    a?.theme,
+    a?.themeName,
+    a?.category,
+    a?.categoryName,
+    a?.theme?.name
+  );
+}
+
+function normalizeDateLabel(raw: string): string {
+  // voor prototype: laat string zoals backend hem geeft
+  // (je kunt later netjes formatteren)
+  return raw || "";
+}
+
 export function mapBackendToUI(a: BackendArticle): UIArticle {
-  const fullContent = (a.contentBlocks ?? [])
-    .filter((b) => b.type === "paragraph" || b.type === "quote")
-    .map((b) => (b.type === "quote" ? `“${b.text ?? ""}”` : b.text ?? ""))
+  const anyA = a as any;
+
+  const fullContent = (anyA.contentBlocks ?? [])
+    .filter((b: any) => b?.type === "paragraph" || b?.type === "quote")
+    .map((b: any) =>
+      b?.type === "quote" ? `“${b?.text ?? ""}”` : b?.text ?? ""
+    )
     .filter(Boolean)
     .join("\n\n");
 
+  const summary =
+    (Array.isArray(anyA.aiSummary)
+      ? anyA.aiSummary.join(" ")
+      : anyA.aiSummary) ||
+    anyA.teaser ||
+    "";
+
   return {
-    id: a._id,
-    title: a.title,
-    summary:
-      (Array.isArray(a.aiSummary) ? a.aiSummary.join(" ") : a.aiSummary) ||
-      a.teaser,
-    keyPoints: a.aiKeyPoints || [],
+    id: pickString(anyA._id, anyA.id),
+    title: pickString(anyA.title),
+    summary,
+    keyPoints: Array.isArray(anyA.aiKeyPoints) ? anyA.aiKeyPoints : [],
     fullContent,
-    location: a.regionName,
-    category: a.theme,
-    imageUrl: a.imageUrl ?? "",
-    publishedAt: a.createdAt,
-    updatedAt: a.updatedAt ?? "",
-    isTrending: false,
-    isNew: false,
+    location: pickRegionName(anyA) || "Onbekende regio",
+    category: pickTheme(anyA) || "Onbekend thema",
+    imageUrl: pickImageUrl(anyA),
+    publishedAt: normalizeDateLabel(
+      pickString(anyA.createdAt, anyA.publishedAt)
+    ),
+    updatedAt: normalizeDateLabel(pickString(anyA.updatedAt)),
+    isTrending: Boolean(anyA.isTrending),
+    isNew: Boolean(anyA.isNew),
   };
 }

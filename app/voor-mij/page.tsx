@@ -106,7 +106,14 @@ export default function VoorMijPage() {
       <main className="px-4 py-4 space-y-4">
         {filteredArticles.length > 0 ? (
           filteredArticles.map((article) => (
-            <NewsCard key={article.id} article={article} />
+            <NewsCard
+              key={article.id}
+              article={article}
+              variant="compact"
+              showLocation={false}
+              showSummary={false}
+              showDate={false}
+            />
           ))
         ) : (
           <div className="text-center py-12 space-y-4">
