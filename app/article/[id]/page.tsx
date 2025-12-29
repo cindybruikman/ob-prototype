@@ -81,7 +81,7 @@ export default function ArticlePage() {
       </header>
 
       {/* Content */}
-      <main className="px-4 py-4">
+      <main className="">
         {/* ✅ propnaam is "article", niet "articles" */}
         <ArticleContent article={article} />
       </main>

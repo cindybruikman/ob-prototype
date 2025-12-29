@@ -67,7 +67,7 @@ export function NewsCard({
     return (
       <Link href={`/article/${article.id}`} className="block">
         <div className={containerClass}>
-          <article className="flex gap-3 bg-card rounded-xl border border-border p-3">
+          <article className="flex gap-3 rounded-xl p-3">
             {showImage && (
               <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary shrink-0">
                 {hasImg ? (
@@ -81,7 +81,7 @@ export function NewsCard({
               </div>
             )}
 
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 flex items-center">
               <h3 className="font-medium text-foreground leading-snug line-clamp-2">
                 {article.title}
               </h3>
