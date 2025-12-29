@@ -23,6 +23,82 @@ export interface BackendArticle {
 export const backendMockArticles: BackendArticle[] = [
   {
     _id: "ob-1",
+    author: "Romee van der Heijden & Storm Roubroeks",
+    title: "Dit is wat je wil weten over vogelgriep",
+    teaser:
+      "Na recente uitbraken van vogelgriep waarbij honderdduizenden kippen zijn geruimd, beantwoorden experts de belangrijkste vragen over het virus, de risico’s en de maatregelen.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/768/432/0.50/0.50/cmV2aXNpb25zLzM5Nzk2NTMtMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1Ua1dUMGFidmRCeXF2RUo0JTJGa3dBbnlFVHZtUFpQYjR5JTJGN05aMmRyc2s1cyUzRCZzcD1yJnNwcj1odHRwcyZzcj1iJnN0PTIwMjUtMDEtMDFUMTAlM0E0MCUzQTAwWiZzdj0yMDIwLTEwLTAy",
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "Op een vleeskuikenbedrijf in Deurne is zaterdag vogelgriep vastgesteld, 162.000 vleeskuikens zullen geruimd moeten worden. Eerder deze maand moesten 80.000 kippen worden geruimd bij een vleeskuikenbedrijf in Uitwijk. Zo moet de verspreiding van vogelgriep worden tegengegaan. In dit artikel beantwoorden we zeven vragen over de vogelgriepuitbraak.",
+      },
+      {
+        type: "paragraph",
+        text: "Wat is de vogelgriep? De vogelgriep is een zeer besmettelijk virus en komt bij bijna alle vogelsoorten voor. Besmette vogels worden door het virus erg ziek of gaan dood.",
+      },
+      {
+        type: "paragraph",
+        text: "Hoe verspreidt de vogelgriep zich? Het vogelgriepvirus kan zich volgens het RIVM tussen dieren verspreiden door direct contact, door de lucht of via besmet materiaal zoals mest. Wilde vogels spelen vaak een belangrijke rol, omdat zij het virus meenemen tijdens hun trekroutes en zo andere vogels kunnen besmetten.",
+      },
+      {
+        type: "paragraph",
+        text: "Is de vogelgriep gevaarlijk voor huisdieren? De NOS meldde eerder dat acht Nederlandse jonge katjes dood zijn gegaan door vogelgriep. Het kan dus wel degelijk dat huisdieren ziek worden.",
+      },
+      {
+        type: "paragraph",
+        text: "Volgens de NVWA kun je letten op symptomen zoals koorts, hijgen, sloomheid, oogontsteking en rode ogen. Het virus komt ook voor bij konijnen, fretten, schapen en geiten.",
+      },
+      {
+        type: "paragraph",
+        text: "Word je ziek van de vogelgriep? Het RIVM meldt dat besmetting van mensen zeldzaam is en meestal mild verloopt. Klachten lijken op een gewone griep met koorts, spierpijn, hoofdpijn en hoesten.",
+      },
+      {
+        type: "paragraph",
+        text: "Mensen die recent in aanraking zijn geweest met besmette vogels en griepklachten krijgen, wordt aangeraden contact op te nemen met de GGD of huisarts.",
+      },
+      {
+        type: "paragraph",
+        text: "Beschermt de griepprik tegen vogelgriep? Nee, de griepprik beschermt niet tegen vogelgriep, maar kan wel voorkomen dat iemand naast vogelgriep ook gewone griep krijgt.",
+      },
+      {
+        type: "paragraph",
+        text: "Wat doet het virus met vogels? Hoogpathogene vogelgriep veroorzaakt ernstige ziekte of sterfte, terwijl laagpathogene varianten mild of zonder klachten verlopen.",
+      },
+      {
+        type: "paragraph",
+        text: "Wie hebben last van de ophokplicht? Sinds half oktober moeten boeren, dierentuinen, kinderboerderijen en hobbyhouders hun pluimvee en watervogels afschermen. Wedstrijden en tentoonstellingen zijn verboden.",
+      },
+      {
+        type: "paragraph",
+        text: "Is de vogelgriep overdraagbaar via voeding? Volgens het Voedingscentrum komt besmet vlees of eieren niet in de winkel terecht en is er geen bewijs voor overdracht via voeding.",
+      },
+    ],
+    aiSummary: [
+      "Na recente uitbraken van vogelgriep in Brabant zijn opnieuw grote aantallen dieren geruimd. In Deurne moesten 162.000 vleeskuikens worden afgemaakt, eerder deze maand nog eens 80.000 bij een bedrijf in Uitwijk. De maatregelen zijn bedoeld om verdere verspreiding van het zeer besmettelijke virus te voorkomen.",
+
+      "Vogelgriep komt bij vrijwel alle vogelsoorten voor en kan zich verspreiden via direct contact, de lucht en besmet materiaal. Wilde trekvogels spelen een belangrijke rol in het verspreiden van het virus. Besmette vogels worden ernstig ziek of sterven, afhankelijk van de variant van het virus.",
+
+      "Voor mensen is besmetting zeldzaam en meestal mild, maar huisdieren zoals katten kunnen ernstig ziek worden. Daarom gelden er strenge maatregelen, waaronder een landelijke ophokplicht voor pluimvee, hobbykippen en watervogels. Wedstrijden en tentoonstellingen met deze dieren zijn voorlopig verboden.",
+
+      "Volgens experts vormt besmet voedsel geen risico voor mensen. Vlees en eieren van besmette dieren komen niet in de winkel terecht en er is geen bewijs dat vogelgriep via voeding wordt overgedragen. Waakzaamheid en naleving van de maatregelen blijven essentieel om verdere uitbraken te voorkomen.",
+    ],
+
+    aiKeyPoints: [
+      "Vogelgriep vastgesteld bij pluimveebedrijven in Brabant",
+      "Ruiming van 242.000 vleeskuikens uitgevoerd",
+      "Virus zeer besmettelijk onder vogels",
+      "Zeldzaam overdraagbaar van vogel op mens",
+      "Ophokplicht geldt voor pluimvee en hobbydieren",
+    ],
+    regionName: "Eindhoven",
+    theme: "Nieuws & maatschappij",
+    createdAt: "2025-01-10T13:30:00Z",
+    updatedAt: "2025-01-10T13:54:00Z",
+  },
+  {
+    _id: "ob-2",
     author: "Studio040",
     title:
       "Gracia vluchtte uit Congo, werd arts in Oekraïne en wacht nu op asiel",
@@ -93,8 +169,15 @@ export const backendMockArticles: BackendArticle[] = [
       },
     ],
     aiSummary: [
-      "Gracia Katombe Nkulu vluchtte uit Congo, studeerde geneeskunde in Oekraïne en probeert nu in Nederland haar plek te vinden in de zorg, terwijl ze wacht op duidelijkheid over haar verblijfsstatus.",
+      "Gracia Katombe Nkulu vluchtte uit Congo om in Oekraïne arts te worden. Na het overlijden van haar ouders zette zij haar studie voort met hulp van een gastgezin. Vlak voor haar afstuderen brak de oorlog uit, waardoor zij via Polen naar Nederland vluchtte en haar diploma hier afrondde.",
+
+      "In Nederland kan zij met haar diploma niet direct als arts werken. Ze moet een langdurig erkenningstraject doorlopen en een hoog niveau Nederlands behalen. Om rond te komen werkte ze in een supermarkt en begon later via een speciaal traject in de ouderenzorg in Eindhoven.",
+
+      "Juist toen zij haar plek begon te vinden, verloor zij haar werkvergunning door gewijzigde regels rond Oekraïense vluchtelingen. Ze moest stoppen met werken en raakte zonder inkomen, terwijl haar toekomst opnieuw onzeker werd.",
+
+      "Gracia heeft inmiddels asiel aangevraagd en mag voorlopig blijven. Een nieuwe werkvergunning wordt op zijn vroegst in 2026 verwacht. Ondanks alles blijft zij vastbesloten om in de zorg te werken en haar leven in Nederland op te bouwen.",
     ],
+
     aiKeyPoints: [
       "Gracia vluchtte uit Congo en studeerde geneeskunde in Oekraïne",
       "Door de oorlog kwam ze in Nederland terecht",
@@ -107,7 +190,7 @@ export const backendMockArticles: BackendArticle[] = [
     updatedAt: "2025-01-10T13:54:00Z",
   },
   {
-    _id: "ob-2",
+    _id: "ob-3",
     author: "Omroep Brabant",
     title:
       "Datalek Eindhoven met kwetsbare burgers: 'Verwijderverzoek is kansloos'",
@@ -170,86 +253,5 @@ export const backendMockArticles: BackendArticle[] = [
     regionName: "",
     theme: "",
     createdAt: "",
-  },
-  {
-    _id: "ob-3",
-    author: "Omroep Brabant",
-    title:
-      "Datalek Eindhoven met kwetsbare burgers: 'Verwijderverzoek is kansloos'",
-    teaser:
-      "De 29-jarige Gracia Katombe Nkulu vluchtte uit Congo om arts te worden. Via Oekraïne kwam ze uiteindelijk in Nederland terecht.",
-    imageUrl:
-      "https://api.omroepbrabant.nl/img/f/768/432/0.49/0.50/cmV2aXNpb25zLzQ4MDY2MTktMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1vNVZPVVlTYlZpZXNXT0M5MU9Ec1hwS1RMTUlqMlBoSFZOcEplaUpvc3JNJTNEJnNwPXImc3ByPWh0dHBzJnNyPWImc3Q9MjAyNS0wMS0wMVQxMCUzQTQwJTNBMDBaJnN2PTIwMjAtMTAtMDI=",
-    contentBlocks: [
-      {
-        type: "paragraph",
-        text: "Wéér kwam deze week een datalek boven water, deze keer bij de gemeente Eindhoven. Medewerkers stopten persoonsgegevens van kwetsbare burgers in een AI-tool zoals ChatGPT. En dat mag niet zomaar, want we hebben allemaal recht op privacy. Hoe groot zijn de gevolgen als jouw persoonsgegevens met een openbare AI-website gedeeld worden?",
-      },
-      {
-        type: "paragraph",
-        text: "Deze week was het Eindhoven en dat is extra pijnlijk. De gemeente stond twee jaar lang onder verscherpt toezicht bij de Autoriteit Persoonsgegevens, omdat datalekken te laat waren gemeld en persoonsgegevens te lang zijn bewaard.",
-      },
-      {
-        type: "paragraph",
-        text: "Vooropgesteld: het is niet slim om persoonsgegevens te uploaden in AI-tools, stelt AI-expert Dimitri van Iersel van Omroep Brabant. Maar het is lastig om te bepalen wat precies de gevolgen zijn.",
-      },
-      {
-        type: "paragraph",
-        text: "We weten nog niet in hoeverre dit een probleem gaat zijn. De gegevens die zijn ingevoerd staan nu misschien wel op een server ergens buiten Europa. Als daar ooit een datalek plaatsvindt, ligt alles op straat. Dat risico speelt bij alle software- en cloudservices waar je gegevens in stopt.",
-      },
-      {
-        type: "paragraph",
-        text: "In het geval van de gemeente Eindhoven ligt het extra gevoelig omdat het gaat om gegevens van kwetsbare burgers.",
-      },
-      {
-        type: "paragraph",
-        text: "Strategisch en juridisch adviesbureau Hooghiemstra & Partners deed onderzoek naar het datalek. Uit hun bevindingen blijkt dat het onder meer gaat om documenten uit de Jeugdwet met daarin informatie over de mentale en fysieke gezondheid van minderjarige kinderen. Ook het burgerservicenummer en soms zelfs een foto van het kind zijn onderdeel van het dossier.",
-      },
-      {
-        type: "paragraph",
-        text: "Daarnaast zijn ook documenten uit de Wet Maatschappelijke Ondersteuning ingevoerd, met gegevens over diagnoses, verslavingen en schulden, inclusief naam, adres, woonplaats en burgerservicenummer.",
-      },
-      {
-        type: "paragraph",
-        text: "Ook cv’s van sollicitanten en interne reflectieverslagen met informatie over werkprestaties zijn in de AI-tool terechtgekomen.",
-      },
-      {
-        type: "paragraph",
-        text: "Als data eenmaal in een trainingsmodel zit, dan is die data niet meer te verwijderen. Data kan zijn meegenomen in trainingsdata voor toekomstige modellen. Zodra het model is afgerond, is die informatie praktisch onomkeerbaar verspreid.",
-      },
-      {
-        type: "paragraph",
-        text: "Gemeente Eindhoven heeft OpenAI gevraagd om de gegevens te verwijderen, maar volgens Van Iersel is zo’n poging kansloos. Alleen binnen zeer korte tijd na invoer is verwijdering soms nog mogelijk.",
-      },
-      {
-        type: "paragraph",
-        text: "Hoewel directe risico’s klein zijn omdat AI-modellen patronen leren en geen dossiers tonen, blijft misbruik mogelijk bij grote hoeveelheden specifieke persoonsgegevens. Denk aan fraude of phishing.",
-      },
-      {
-        type: "paragraph",
-        text: "Het gebrek aan duidelijke regels en beleid rond AI-gebruik is volgens Van Iersel het grootste probleem. Als regels vaag zijn, gaan medewerkers zelf bepalen wat kan en mag.",
-      },
-      {
-        type: "paragraph",
-        text: "Hij waarschuwt dat veel organisaties nog onvoldoende zijn voorbereid op het AI-tijdperk en dat er in de toekomst waarschijnlijk veel meer data zal uitlekken.",
-      },
-    ],
-    aiSummary: [
-      "Bij de gemeente Eindhoven zijn opnieuw ernstige privacyproblemen vastgesteld. Medewerkers hebben vertrouwelijke persoonsgegevens ingevoerd in openbare AI-tools zoals ChatGPT. Het gaat onder meer om documenten uit de Jeugdwet en de WMO, met medische gegevens, diagnoses, schulden, adressen en burgerservicenummers van kwetsbare burgers en minderjarige kinderen. Ook sollicitatie-cv’s en interne beoordelingsdocumenten zijn in de AI-systemen terechtgekomen. De gemeente stond eerder al onder verscherpt toezicht van de Autoriteit Persoonsgegevens vanwege eerdere datalekken.",
-      "Volgens AI-expert Dimitri van Iersel is het vrijwel onmogelijk om deze informatie volledig te verwijderen zodra zij onderdeel wordt van AI-training. 'Als data eenmaal in een trainingsmodel zit, dan is die data niet meer te verwijderen.' Een verwijderverzoek bij OpenAI heeft volgens hem alleen kans van slagen binnen zeer korte tijd na invoer; daarna is de data feitelijk onomkeerbaar verspreid binnen modellen. De gemeente Eindhoven heeft een dergelijk verzoek gedaan, maar ontving tot nu toe geen reactie.",
-      "Hoewel directe risico’s voor betrokkenen klein lijken omdat AI-modellen patronen leren en geen dossiers tonen, blijft misbruik mogelijk wanneer grote hoeveelheden specifieke informatie over personen in trainingsdata terechtkomen. Dat kan leiden tot phishing, fraude of identiteitsmisbruik. Van Iersel benadrukt dat organisaties altijd moeten aannemen dat ingevoerde data kan uitlekken, zeker bij gebruik van externe software en cloudsystemen.",
-      "Het structurele probleem ligt volgens hem vooral bij het ontbreken van helder beleid rond AI-gebruik binnen organisaties. Wanneer regels vaag of afwezig zijn, gaan medewerkers eigen keuzes maken met grote gevolgen voor privacy en veiligheid. Hij waarschuwt dat veel bedrijven zich nog onvoldoende hebben aangepast aan het AI-tijdperk: 'Ik vrees dat we in een tijd leven waarin heel veel data op straat terechtkomt.'",
-    ],
-    aiKeyPoints: [
-      "Gemeente Eindhoven lekte persoonsgegevens via openbare AI-tools",
-      "Gegevens betroffen kwetsbare burgers en minderjarige kinderen",
-      "Documenten bevatten medische informatie, BSN en adresgegevens",
-      "Verwijdering uit AI-systemen praktisch onmogelijk",
-      "Risico op misbruik en datalekken blijft bestaan",
-    ],
-    regionName: "Eindhoven",
-    theme: "Nieuws & maatschappij",
-    createdAt: "2025-01-10T13:30:00Z",
-    updatedAt: "2025-01-10T13:54:00Z",
   },
 ];

@@ -18,15 +18,19 @@ export function ArticleContent({ article }: ArticleContentProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("full");
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto w-full max-w-[808px] px-4 space-y-6">
       {/* Hero Image */}
       {article.imageUrl && (
-        <div className="aspect-video bg-secondary rounded-lg overflow-hidden -mx-4 -mt-4">
-          <img
-            src={article.imageUrl}
-            alt={article.title}
-            className="w-full h-full object-cover"
-          />
+        <div className="relative overflow-hidden rounded-xl bg-secondary">
+          {/* OB ratio: 808x424 */}
+          <div className="relative aspect-[808/424]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={article.imageUrl}
+              alt={article.title}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
         </div>
       )}
 
