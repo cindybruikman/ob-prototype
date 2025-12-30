@@ -3,6 +3,7 @@ import { Cloud, MapPin, MessageCircle, Search } from "lucide-react";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { backendMockArticles } from "@/lib/mockDataBackend";
 import { mapBackendToUI } from "@/lib/mapBackendToUI";
+import Image from "next/image";
 
 export default function Home() {
   const articles = backendMockArticles.map(mapBackendToUI);
@@ -19,17 +20,19 @@ export default function Home() {
           className={containerClass + " flex items-center justify-between py-3"}
         >
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">
-                B
-              </span>
-            </div>
-            <span className="font-bold text-foreground">Nieuws</span>
+            <Image
+              src="/img/logo-ob.png"
+              alt="Omroep Brabant"
+              width={32}
+              height={32}
+              className="h-8 w-auto"
+              priority
+            />
           </div>
 
           <div className="flex items-center gap-3 text-muted-foreground">
-            <span className="text-sm">Moerdijk</span>
-            <span className="text-sm">Carnaval</span>
+            {/* <span className="text-sm">Moerdijk</span>
+            <span className="text-sm">Carnaval</span> */}
             <Search className="h-5 w-5" />
           </div>
         </div>
