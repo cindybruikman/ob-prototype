@@ -13,7 +13,7 @@ export interface BackendArticle {
   contentBlocks: ContentBlock[];
   aiSummary: string[];
   aiKeyPoints: string[];
-  regionName: string;
+  regionNames: string[];
   theme: string;
   createdAt: string;
   updatedAt?: string;
@@ -92,10 +92,9 @@ export const backendMockArticles: BackendArticle[] = [
       "Zeldzaam overdraagbaar van vogel op mens",
       "Ophokplicht geldt voor pluimvee en hobbydieren",
     ],
-    regionName: "Eindhoven",
+    regionNames: ["Eindhoven", "Deurne"],
     theme: "Nieuws & maatschappij",
-    createdAt: "2025-01-10T13:30:00Z",
-    updatedAt: "2025-01-10T13:54:00Z",
+    createdAt: "28 december 2025",
   },
   {
     _id: "ob-2",
@@ -184,10 +183,9 @@ export const backendMockArticles: BackendArticle[] = [
       "Ze werkt in de ouderenzorg maar mag nu niet meer werken",
       "Haar asielprocedure loopt nog",
     ],
-    regionName: "Eindhoven",
+    regionNames: ["Eindhoven"],
     theme: "Nieuws & maatschappij",
-    createdAt: "2025-01-10T13:30:00Z",
-    updatedAt: "2025-01-10T13:54:00Z",
+    createdAt: "20 december 2025",
   },
   {
     _id: "ob-3",
@@ -250,8 +248,8 @@ export const backendMockArticles: BackendArticle[] = [
       "Verwijdering uit AI-systemen praktisch onmogelijk",
       "Risico op misbruik en datalekken blijft bestaan",
     ],
-    regionName: "",
-    theme: "",
-    createdAt: "",
+    regionNames: ["Eindhoven"],
+    theme: "Tech & innovatie",
+    createdAt: "20 december 2025",
   },
 ];

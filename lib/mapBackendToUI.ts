@@ -35,6 +35,20 @@ function pickImageUrl(a: any): string {
 }
 
 function pickRegionName(a: any): string {
+  // nieuw: support voor array-velden (regionNames / locations)
+  const arr =
+    (Array.isArray(a?.regionNames) && a.regionNames) ||
+    (Array.isArray(a?.regions) && a.regions) ||
+    (Array.isArray(a?.locations) && a.locations);
+
+  if (arr && arr.length > 0) {
+    return arr
+      .filter((x: unknown) => typeof x === "string" && x.trim().length > 0)
+      .map((x: string) => x.trim())
+      .join(", "); // of " • " als je dat mooier vindt in UI
+  }
+
+  // bestaand: string-velden
   return pickString(
     a?.regionName,
     a?.region,

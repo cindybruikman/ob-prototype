@@ -16,6 +16,8 @@ export default function VoorMijPage() {
   const router = useRouter();
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
 
+  const containerClass = "mx-auto w-full max-w-[808px] px-4";
+
   // 1) localStorage => alleen client
   useEffect(() => {
     const prefs = getPreferences();
@@ -78,7 +80,7 @@ export default function VoorMijPage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border">
-        <div className="px-4 py-4">
+        <div className={containerClass + " py-4"}>
           <h1 className="text-2xl font-bold text-foreground">Voor jou</h1>
 
           <Link
@@ -92,35 +94,28 @@ export default function VoorMijPage() {
         </div>
       </header>
 
-      {/* Weekly recap knop (netjes met padding/spacing) */}
-      <div className="px-4 pt-3">
-        <Link
-          href="/weekly"
-          className="block rounded-xl border border-white/20 bg-card p-4 hover:bg-white/5 transition"
-        >
-          <div className="flex items-start gap-3">
-            {/* <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-              🗞️
-            </div> */}
+      {/* ✅ 1 container voor ALLES */}
+      <div className={containerClass}>
+        {/* Weekly recap CTA */}
+        <div className="pt-3">
+          <Link
+            href="/weekly"
+            className="block rounded-xl border border-white/20 bg-card p-4 hover:bg-white/5 transition"
+          >
+            <h3 className="font-semibold text-white">Jouw weekly recap</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Het belangrijkste nieuws van jouw regio’s, in één overzicht.
+            </p>
+            <span className="inline-block mt-2 text-sm text-primary font-medium">
+              Bekijk overzicht →
+            </span>
+          </Link>
+        </div>
 
-            <div className="flex-1">
-              <h3 className="font-semibold text-white">Jouw weekly recap</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Het belangrijkste nieuws van jouw regio’s, in één overzicht.
-              </p>
-
-              <span className="inline-block mt-2 text-sm text-primary font-medium">
-                Bekijk overzicht →
-              </span>
-            </div>
-          </div>
-        </Link>
-      </div>
-
-      {/* Compact cards, zelfde als Home */}
-      <main className="">
-        {filteredArticles.length > 0 ? (
-          filteredArticles.map((article) => (
+        {/* Compact cards */}
+        {/* Artikelen */}
+        <main className="py-4 space-y-3">
+          {filteredArticles.map((article) => (
             <NewsCard
               key={article.id}
               article={article}
@@ -129,18 +124,9 @@ export default function VoorMijPage() {
               showSummary={false}
               showDate={false}
             />
-          ))
-        ) : (
-          <div className="text-center py-12 space-y-4">
-            <p className="text-muted-foreground">
-              Geen artikelen gevonden voor je geselecteerde locaties.
-            </p>
-            <Link href="/location" className="text-primary hover:underline">
-              Pas je locatie-instellingen aan
-            </Link>
-          </div>
-        )}
-      </main>
+          ))}
+        </main>
+      </div>
 
       <BottomNav />
     </div>
