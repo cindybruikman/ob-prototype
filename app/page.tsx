@@ -102,7 +102,8 @@ export default function Home() {
       </div>
 
       {/* List */}
-      <div className="py-4 space-y-3">
+      {/* List (constrained) */}
+      <div className={containerClass + " py-4 space-y-3"}>
         {restArticles.map((article) => (
           <NewsCard
             key={article.id}
