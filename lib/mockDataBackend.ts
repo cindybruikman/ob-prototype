@@ -252,4 +252,72 @@ export const backendMockArticles: BackendArticle[] = [
     theme: "Tech & innovatie",
     createdAt: "20 december 2025",
   },
+  {
+    _id: "ob-4",
+    author: "Carlijn Kösters",
+    title:
+      "Bas maakt een vuist tegen McDonald's in het bos: al 9000 handtekeningen in Oisterwijk",
+    teaser:
+      "Bas Zijlmans startte een petitie tegen de komst van een McDonald's naast de beschermde natuur van Oisterwijk. De actie krijgt massale steun.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/1024/576/0.50/0.50/cmV2aXNpb25zLzQ4MTE3NDYtMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1SamNFblFGaGQxZnZIdlBKaWpuNTNqVXU0SCUyQjQ1YVZ4Sm9KOWZJdGIxdmMlM0Qmc3A9ciZzcHI9aHR0cHMmc3I9YiZzdD0yMDI1LTAxLTAxVDEwJTNBNDAlM0EwMFomc3Y9MjAyMC0xMC0wMg==",
+
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "Een fastfoodketen met drive-thru, pál naast de beschermde bossen en vennen van Oisterwijk. Het idee alleen al gaat Bas Zijlmans (43) uit Oisterwijk veel te ver. Hij startte een petitie om zijn dierbare stuk natuur te beschermen. De steun laat zien dat hij niet de enige is die zich verzet tegen een grote, gele M.",
+      },
+      {
+        type: "paragraph",
+        text: "“Ik las het voor het eerst in de krant. Daar vertelde een mevrouw dat hier waarschijnlijk een McDonald's zou komen”, vertelt Bas. Terwijl hij het vertelt, houdt hij zijn hand op zijn hart. “Dat schrikt me echt af. Dat is schadelijk voor de beestjes, voor de schimmels. Alle natuur die hier is, gaat dan dood. Ik weet hoeveel puinzooi dat veroorzaakt. Dat vernietigt heel dit gebied.”",
+      },
+      {
+        type: "paragraph",
+        text: "Het is een schrikbeeld, voor de Oisterwijker. Hij is opgegroeid tussen het natuurschoon en komt er nog steeds elke week om te wandelen. “Rust is hier heel belangrijk”, vertelt hij. Van thuis heeft hij altijd meegekregen dat je goed voor de natuur moet zorgen. “Ze noemen Oisterwijk niet voor niets de parel in het groen. Maar dan moet je dat groen niet kapot maken.”",
+      },
+      {
+        type: "paragraph",
+        text: "Met zo'n fastfoodketen tegen de bosrand aan, bestaat het risico namelijk dat de natuur binnen no time vol ligt met eten. Het zorgt voor afval, voor verkeer, voor geluid en voor lucht- en lichtvervuiling. Een crime voor het ecosysteem.",
+      },
+      {
+        type: "paragraph",
+        text: "Bas vond het een bespottelijk idee en besloot gelijk een petitie te starten. Maandagmiddag staat de teller op ruim 9000 handtekeningen. “Ik heb het zelf gewoon naar vrienden toegestuurd, maar op de een of andere manier is dat zich gaan verspreiden. En als er tienduizenden mensen tekenen, wil dat toch wel iets zeggen. Alle fastfoodsrestaurants horen hier niet thuis.”",
+      },
+      {
+        type: "paragraph",
+        text: "Voor alle andere ideeën staat de initiatiefnemer wel open. Iets voor natuurfotografen, een huisje voor natuurbeheer of iets leuks voor jongeren. “Het plan van de ontwikkelaar ligt nu bij de gemeente, maar eigenlijk vind ik het idee alleen al erg genoeg.”",
+      },
+      {
+        type: "paragraph",
+        text: "“Dat je denkt dat je hiér een fastfoodrestaurant kunt bouwen, omdat je vier miljoen hebt neergelegd. Dat kan echt niet.”",
+      },
+      {
+        type: "paragraph",
+        text: "Een echt streefdoel heeft Bas niet, voor zijn handtekeningen. “Ik laat de pagina denk ik gewoon lopen, tot 5 januari. Dan start alles bij de gemeente weer een beetje op en is de vakantie voorbij.” Dan gaat hij het gesprek aan.",
+      },
+      {
+        type: "paragraph",
+        text: "En hij vindt het belangrijk dat dat op een respectvolle manier verloopt. “Zelfs richting de projectontwikkelaar. Ook al mag ik hem niet, omdat hij vier miljoen neerlegt en dan maar doet wat-ie wil. Dan nog steeds moet dat gaan met overleg en met liefde.”",
+      },
+    ],
+    aiSummary: [
+      "Bas Zijlmans uit Oisterwijk is een petitie gestart tegen plannen voor een McDonald's met drive-thru naast de beschermde bossen en vennen van zijn woonplaats. Binnen korte tijd verzamelden zich meer dan 9000 handtekeningen. Voor Bas staat vast dat een fastfoodrestaurant op deze locatie onaanvaardbare schade zou veroorzaken aan natuur, dieren en de rust van het gebied.",
+
+      "Oisterwijk staat bekend als 'de parel in het groen' en vormt voor veel inwoners een belangrijke plek voor ontspanning en natuurbeleving. Bas wijst op de verwachte gevolgen van afval, verkeersdrukte, geluidsoverlast en lucht- en lichtvervuiling. Volgens hem zou dit het kwetsbare ecosysteem rondom het bosgebied ernstig aantasten.",
+
+      "Hoewel Bas fel tegen de plannen is, staat hij open voor alternatieve ideeën die beter passen bij het gebied, zoals voorzieningen voor natuurfotografen of jongeren. Het voorstel van de projectontwikkelaar ligt momenteel bij de gemeente. Na de jaarwisseling wil hij het gesprek aangaan met alle betrokken partijen.",
+
+      "Voor Bas is het belangrijk dat dit gesprek respectvol verloopt, ook richting de projectontwikkelaar. Zijn actie is niet bedoeld als persoonlijke aanval, maar als poging om een natuurgebied te beschermen dat voor veel inwoners van grote waarde is.",
+    ],
+    aiKeyPoints: [
+      "Petitie tegen McDonald's bij natuurgebied Oisterwijk gestart",
+      "Meer dan 9000 handtekeningen verzameld",
+      "Bewoners vrezen schade aan kwetsbaar ecosysteem",
+      "Plan ligt momenteel bij gemeente",
+      "Initiatiefnemer wil respectvol overleg",
+    ],
+    regionNames: ["Oisterwijk"],
+    theme: "Natuur & milieu",
+    createdAt: "29 december 2025",
+  },
 ];
