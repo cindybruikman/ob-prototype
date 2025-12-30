@@ -23,17 +23,49 @@ export default function Home() {
             <Image
               src="/img/logo-ob.png"
               alt="Omroep Brabant"
-              width={32}
-              height={32}
+              width={45}
+              height={45}
               className="h-8 w-auto"
               priority
             />
           </div>
 
-          <div className="flex items-center gap-3 text-muted-foreground">
-            {/* <span className="text-sm">Moerdijk</span>
-            <span className="text-sm">Carnaval</span> */}
-            <Search className="h-5 w-5" />
+          <div className="relative flex items-center">
+            {/* Rode flap */}
+            <div
+              aria-hidden
+              className="
+      absolute
+      -right-12
+      -top-10
+      w-24
+      h-20
+      bg-[#e00]
+      rounded-2xl
+      rotate-[-20deg]
+      z-0
+    "
+            />
+
+            {/* Search icon */}
+            <button
+              type="button"
+              className="
+      relative
+      z-10
+      w-10
+      h-10
+      flex
+      items-center
+      justify-center
+      text-white
+      hover:opacity-90
+      transition
+    "
+              aria-label="Zoeken"
+            >
+              <Search className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </header>
