@@ -24,8 +24,14 @@ export default function VoorMijPage() {
     const prefs = getPreferences();
     setPreferences(prefs);
 
+    if (!prefs.hasSeenIntro) {
+      router.replace("/voor-mij/setup");
+      return;
+    }
+
     if (!prefs.hasCompletedSetup) {
       router.replace("/location");
+      return;
     }
   }, [router]);
 

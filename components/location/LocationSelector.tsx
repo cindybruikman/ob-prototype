@@ -379,16 +379,6 @@ export function LocationSelector() {
           )}
         </div>
       )}
-
-      {/* Continue */}
-      <div className="pt-2">
-        <Button className="w-full" size="lg" onClick={handleContinue}>
-          Ga verder
-        </Button>
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          Je kunt deze instellingen later altijd aanpassen.
-        </p>
-      </div>
     </div>
   );
 }

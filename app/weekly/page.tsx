@@ -20,13 +20,21 @@ export default function WeeklyPage() {
   const router = useRouter();
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
 
+  const containerClass = "mx-auto w-full max-w-[808px] px-4";
+
   // localStorage -> alleen client
   useEffect(() => {
     const prefs = getPreferences();
     setPreferences(prefs);
 
+    if (!prefs.hasSeenIntro) {
+      router.replace("/voor-mij/setup");
+      return;
+    }
+
     if (!prefs.hasCompletedSetup) {
       router.replace("/location");
+      return;
     }
   }, [router]);
 
@@ -78,19 +86,24 @@ export default function WeeklyPage() {
       ? regionLocations.map((l) => l.name).join(", ")
       : "Alle locaties";
 
-  // radius tonen alleen als er precies 1 regio is (anders wordt het raar)
   const radiusLabel =
     regionLocations.length === 1 ? `${regionLocations[0].radius} km` : "";
 
   if (!preferences) {
     return (
       <div className="min-h-screen pb-20 bg-background">
-        <header className="flex items-center px-4 py-3 bg-card sticky top-0 z-40 border-b border-border">
-          <button onClick={() => router.back()} className="p-2 -ml-2">
-            <ArrowLeft className="h-5 w-5 text-foreground" />
-          </button>
+        <header className="sticky top-0 z-40 border-b border-border bg-card">
+          <div className={containerClass + " flex items-center py-3"}>
+            <button onClick={() => router.back()} className="p-2 -ml-2">
+              <ArrowLeft className="h-5 w-5 text-foreground" />
+            </button>
+          </div>
         </header>
-        <div className="px-4 py-4 text-sm text-muted-foreground">Laden…</div>
+
+        <div className={containerClass + " py-4 text-sm text-muted-foreground"}>
+          Laden…
+        </div>
+
         <BottomNav />
       </div>
     );
@@ -99,14 +112,16 @@ export default function WeeklyPage() {
   return (
     <div className="min-h-screen pb-20 bg-background">
       {/* Header */}
-      <header className="flex items-center px-4 py-3 bg-card sticky top-0 z-40 border-b border-border">
-        <button onClick={() => router.back()} className="p-2 -ml-2">
-          <ArrowLeft className="h-5 w-5 text-foreground" />
-        </button>
+      <header className="sticky top-0 z-40 border-b border-border bg-card">
+        <div className={containerClass + " flex items-center py-3"}>
+          <button onClick={() => router.back()} className="p-2 -ml-2">
+            <ArrowLeft className="h-5 w-5 text-foreground" />
+          </button>
+        </div>
       </header>
 
       {/* Content */}
-      <div className="px-4 space-y-4 py-4">
+      <div className={containerClass + " space-y-4 py-4"}>
         <div>
           <h1 className="text-2xl font-bold text-foreground">
             Jouw weekly recap

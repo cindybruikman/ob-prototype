@@ -8,10 +8,27 @@ export interface SavedLocation {
   source: "current" | "region";
 }
 
+export type ThemeKey =
+  | "Nieuws & maatschappij"
+  | "Sport"
+  | "Brabantse cultuur"
+  | "Natuur & milieu"
+  | "Bedrijven & innovatie"
+  | "Vrije tijd & entertainment";
+
 export interface UserPreferences {
   savedLocations: SavedLocation[];
   useCurrentLocation: boolean;
+
+  // onboarding states
+  hasSeenIntro: boolean;
   hasCompletedSetup: boolean;
+
+  // intro toggle
+  useReadingBehavior: boolean;
+
+  // themes
+  selectedThemes: ThemeKey[];
 }
 
 const STORAGE_KEY = "news-app-preferences";
@@ -19,7 +36,12 @@ const STORAGE_KEY = "news-app-preferences";
 const defaultPreferences: UserPreferences = {
   savedLocations: [],
   useCurrentLocation: false,
+
+  hasSeenIntro: false,
   hasCompletedSetup: false,
+
+  useReadingBehavior: false,
+  selectedThemes: [],
 };
 
 function isBrowser(): boolean {
@@ -58,23 +80,34 @@ export function resetPreferences() {
 }
 
 /**
- * Filter op basis van gekozen locaties.
- * - Als er geen savedLocations zijn: alles tonen.
- * - Anders: match op artikel.location (zoals "Tilburg", "Eindhoven", etc.)
+ * Filter op basis van gekozen locaties + thema's.
+ * - Geen locaties gekozen? => alles (locatie)
+ * - Geen thema's gekozen? => alles (thema)
  */
-export function filterArticlesByPreferences<T extends { location: string }>(
-  articles: T[],
-  prefs: UserPreferences
-): T[] {
-  const picked = prefs.savedLocations
+export function filterArticlesByPreferences<
+  T extends { location: string; category?: string }
+>(articles: T[], prefs: UserPreferences): T[] {
+  // 1) locatie filter (zoals je al had)
+  const pickedRegions = (prefs.savedLocations ?? [])
     .filter((l) => l.source === "region")
-    .map((l) => l.name);
+    .map((l) => l.name.toLowerCase());
 
-  if (picked.length === 0) return articles;
+  let result = articles;
 
-  return articles.filter((article) =>
-    picked.some((loc) =>
-      article.location.toLowerCase().includes(loc.toLowerCase())
-    )
-  );
+  if (pickedRegions.length > 0) {
+    result = result.filter((a) =>
+      pickedRegions.some((loc) => a.location.toLowerCase().includes(loc))
+    );
+  }
+
+  // 2) thema filter (nieuw)
+  const themes = (prefs.selectedThemes ?? []).map((t) => t.toLowerCase());
+
+  if (themes.length > 0) {
+    result = result.filter((a) =>
+      themes.some((t) => (a.category ?? "").toLowerCase().includes(t))
+    );
+  }
+
+  return result;
 }
