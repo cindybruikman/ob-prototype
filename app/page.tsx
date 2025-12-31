@@ -4,6 +4,7 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { backendMockArticles } from "@/lib/mockDataBackend";
 import { mapBackendToUI } from "@/lib/mapBackendToUI";
 import Image from "next/image";
+import { TestApiButton } from "@/components/dev/TestApiButton";
 
 export default function Home() {
   const articles = backendMockArticles.map(mapBackendToUI);
@@ -69,6 +70,9 @@ export default function Home() {
           </div>
         </div>
       </header>
+      <div className="px-4 pt-3">
+        <TestApiButton />
+      </div>
 
       {/* Hero */}
       <div className="pt-2">
