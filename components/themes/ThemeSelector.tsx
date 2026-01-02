@@ -11,6 +11,8 @@ const THEMES: { key: ThemeKey; emoji: string }[] = [
   { key: "Natuur & milieu", emoji: "🌿" },
   { key: "Bedrijven & innovatie", emoji: "💡" },
   { key: "Vrije tijd & entertainment", emoji: "🎉" },
+  { key: "Verkeer", emoji: "🚗" },
+  { key: "112", emoji: "🚨" },
 ];
 
 export function ThemeSelector({

@@ -1,4 +1,5 @@
 import type { BackendArticle } from "@/lib/mockDataBackend";
+import { formatDutchDate } from "@/lib/date";
 
 export type UIArticle = {
   id: string;
@@ -10,7 +11,6 @@ export type UIArticle = {
   category: string;
   imageUrl: string;
   publishedAt: string;
-  updatedAt: string;
   isNew?: boolean;
   isTrending?: boolean;
 };
@@ -75,37 +75,25 @@ function normalizeDateLabel(raw: string): string {
 }
 
 export function mapBackendToUI(a: BackendArticle): UIArticle {
-  const anyA = a as any;
-
-  const fullContent = (anyA.contentBlocks ?? [])
-    .filter((b: any) => b?.type === "paragraph" || b?.type === "quote")
-    .map((b: any) =>
-      b?.type === "quote" ? `“${b?.text ?? ""}”` : b?.text ?? ""
-    )
+  const fullContent = (a.contentBlocks ?? [])
+    .filter((b) => b.type === "paragraph" || b.type === "quote")
+    .map((b) => (b.type === "quote" ? `“${b.text ?? ""}”` : b.text ?? ""))
     .filter(Boolean)
     .join("\n\n");
 
-  const summary =
-    (Array.isArray(anyA.aiSummary)
-      ? anyA.aiSummary.join(" ")
-      : anyA.aiSummary) ||
-    anyA.teaser ||
-    "";
-
   return {
-    id: pickString(anyA._id, anyA.id),
-    title: pickString(anyA.title),
-    summary,
-    keyPoints: Array.isArray(anyA.aiKeyPoints) ? anyA.aiKeyPoints : [],
+    id: a._id,
+    title: a.title,
+    summary:
+      (Array.isArray(a.aiSummary) ? a.aiSummary.join(" ") : a.aiSummary) ||
+      a.teaser,
+    keyPoints: a.aiKeyPoints || [],
     fullContent,
-    location: pickRegionName(anyA) || "Onbekende regio",
-    category: pickTheme(anyA) || "Onbekend thema",
-    imageUrl: pickImageUrl(anyA),
-    publishedAt: normalizeDateLabel(
-      pickString(anyA.createdAt, anyA.publishedAt)
-    ),
-    updatedAt: normalizeDateLabel(pickString(anyA.updatedAt)),
-    isTrending: Boolean(anyA.isTrending),
-    isNew: Boolean(anyA.isNew),
+    location: a.regionName,
+    category: a.theme,
+    imageUrl: a.imageUrl ?? "",
+    publishedAt: formatDutchDate(a.createdAt),
+    isTrending: false,
+    isNew: false,
   };
 }

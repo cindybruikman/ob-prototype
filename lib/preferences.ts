@@ -14,7 +14,9 @@ export type ThemeKey =
   | "Brabantse cultuur"
   | "Natuur & milieu"
   | "Bedrijven & innovatie"
-  | "Vrije tijd & entertainment";
+  | "Vrije tijd & entertainment"
+  | "Verkeer"
+  | "112";
 
 export interface UserPreferences {
   savedLocations: SavedLocation[];
