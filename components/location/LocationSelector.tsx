@@ -1,209 +1,322 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { MapPin, Navigation, Plus, X, Search } from "lucide-react";
+import { MapPin, Plus, X, Navigation } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { radiusOptions, availableLocations } from "@/lib/mockData";
+import { availableLocations, radiusOptions } from "@/lib/mockData";
 import {
   getPreferences,
   savePreferences,
-  type LocationLabel,
-  type SavedLocation,
   type UserPreferences,
+  type SavedLocation,
+  type LocationLabel,
 } from "@/lib/preferences";
 
-const LABELS: LocationLabel[] = ["Woonplaats", "Werk", "Anders"];
-
-function slugify(value: string) {
-  return value.toLowerCase().trim().replace(/\s+/g, "-");
+/** ---------- Helpers: normalize + match ---------- */
+function normalize(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // accents weg
+    .replace(/['’]/g, "") // apostrof varianten weg
+    .replace(/-/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-export function LocationSelector() {
-  const router = useRouter();
+function matchToAvailableLocation(rawPlace: string, available: string[]) {
+  const n = normalize(rawPlace);
 
+  // 1) exact match
+  const exact = available.find((loc) => normalize(loc) === n);
+  if (exact) return exact;
+
+  // 2) contains match (bijv. "Gemeente Tilburg" → "Tilburg")
+  const contains = available.find((loc) => n.includes(normalize(loc)));
+  if (contains) return contains;
+
+  // 3) reverse contains (bijv. "Tilburg Reeshof" vs "Tilburg")
+  const reverseContains = available.find((loc) => normalize(loc).includes(n));
+  if (reverseContains) return reverseContains;
+
+  return null;
+}
+
+/** ---------- Reverse geocode (lat/lng → place) ---------- */
+async function reverseGeocodeToPlaceName(coords: { lat: number; lng: number }) {
+  const url =
+    `https://nominatim.openstreetmap.org/reverse` +
+    `?format=jsonv2&lat=${coords.lat}&lon=${coords.lng}&zoom=12&addressdetails=1`;
+
+  const res = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": "nl",
+    },
+  });
+
+  if (!res.ok) throw new Error(`Reverse geocode failed (${res.status})`);
+  const data = await res.json();
+
+  const a = data?.address ?? {};
+  return (a.city ||
+    a.town ||
+    a.village ||
+    a.municipality ||
+    a.hamlet ||
+    a.suburb ||
+    a.county ||
+    null) as string | null;
+}
+
+type Props = {
+  onContinue?: () => void;
+};
+
+export function LocationSelector({ onContinue }: Props) {
+  // ✅ nooit null nodig: getPreferences() geeft altijd defaultPreferences terug
   const [preferences, setPreferences] = useState<UserPreferences>(() =>
     getPreferences()
   );
 
-  // UI state
-  const [query, setQuery] = useState("");
-  const [pendingType, setPendingType] = useState<"current" | "region" | null>(
-    null
-  );
-  const [pendingName, setPendingName] = useState<string>("");
-  const [pendingRadius, setPendingRadius] = useState<number>(15);
-  const [pendingLabel, setPendingLabel] = useState<LocationLabel>("Woonplaats");
-  const [showPicker, setShowPicker] = useState(false);
-
-  // persist
+  // ✅ 1 save effect is genoeg
   useEffect(() => {
     savePreferences(preferences);
   }, [preferences]);
 
-  const hasAnySaved = preferences.savedLocations.length > 0;
+  const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [search, setSearch] = useState("");
+
+  // ✅ Kies een label dat WEL in LocationLabel zit
+  const DEFAULT_LABEL: LocationLabel = "Woonplaats";
+
+  const currentSaved = useMemo(
+    () => preferences.savedLocations.find((l) => l.id === "current"),
+    [preferences.savedLocations]
+  );
+
+  const liveRadius = useMemo(() => {
+    return currentSaved?.radius ?? 15;
+  }, [currentSaved]);
 
   const radiusPixelSize = useMemo(() => {
-    // 5km = 120px, 50km = 240px (prototype schaal)
+    // 5km = 120px, 50km = 240px
     const min = 120;
     const max = 240;
-    const t = (pendingRadius - 5) / (50 - 5);
+    const t = (liveRadius - 5) / (50 - 5);
     const clamped = Math.max(0, Math.min(1, t));
     return Math.round(min + (max - min) * clamped);
-  }, [pendingRadius]);
+  }, [liveRadius]);
 
-  const selectedRegionNames = useMemo(() => {
-    return new Set(
-      preferences.savedLocations
+  const filteredAvailable = useMemo(() => {
+    const already = new Set(
+      (preferences.savedLocations ?? [])
         .filter((l) => l.source === "region")
         .map((l) => l.name.toLowerCase())
     );
-  }, [preferences.savedLocations]);
 
-  const filteredRegions = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = search.trim().toLowerCase();
+
     return availableLocations
-      .filter((r) => !selectedRegionNames.has(r.toLowerCase()))
-      .filter((r) => (q ? r.toLowerCase().includes(q) : true));
-  }, [query, selectedRegionNames]);
+      .filter((loc) => !already.has(loc.toLowerCase()))
+      .filter((loc) => (q ? loc.toLowerCase().includes(q) : true));
+  }, [preferences.savedLocations, search]);
 
-  function openPendingCurrent() {
-    setPendingType("current");
-    setPendingName("Huidige locatie");
-    setPendingRadius(15);
-    setPendingLabel("Woonplaats");
-  }
-
-  function openPendingRegion(name: string) {
-    setPendingType("region");
-    setPendingName(name);
-    setPendingRadius(15);
-    setPendingLabel("Woonplaats");
-  }
-
-  function closePending() {
-    setPendingType(null);
-    setPendingName("");
-    setPendingRadius(15);
-    setPendingLabel("Woonplaats");
-  }
-
-  function upsertSavedLocation(loc: SavedLocation) {
+  /** ---------- Actions ---------- */
+  const setLiveRadius = (radius: number) => {
     setPreferences((prev) => {
-      const idx = prev.savedLocations.findIndex(
-        (x) => x.id === loc.id && x.source === loc.source
-      );
+      const existing = prev.savedLocations.find((l) => l.id === "current");
 
-      const next = [...prev.savedLocations];
-      if (idx >= 0) next[idx] = loc;
-      else next.push(loc);
+      const nextCurrent: SavedLocation = {
+        id: "current",
+        name: existing?.name ?? "Huidige locatie",
+        radius,
+        label: existing?.label ?? DEFAULT_LABEL,
+        source: "current",
+      };
 
-      return { ...prev, savedLocations: next };
+      const nextSaved = existing
+        ? prev.savedLocations.map((l) => (l.id === "current" ? nextCurrent : l))
+        : [...prev.savedLocations, nextCurrent];
+
+      return { ...prev, savedLocations: nextSaved };
     });
-  }
+  };
 
-  function removeSavedLocation(id: string) {
-    setPreferences((prev) => ({
-      ...prev,
-      savedLocations: prev.savedLocations.filter((l) => l.id !== id),
-    }));
-  }
+  const handleToggleLocation = () => {
+    const next = !preferences.useCurrentLocation;
 
-  const handleToggleLive = (checked: boolean) => {
-    setPreferences((prev) => ({ ...prev, useCurrentLocation: checked }));
-
-    if (checked) {
-      toast("Live locatie aan", {
-        description: "Kies straks radius en sla op als woon/werk/anders.",
-      });
-      openPendingCurrent();
-    } else {
-      toast("Live locatie uit", {
-        description: "Kies één of meer regio’s uit de lijst.",
-      });
-      // verwijder eventueel opgeslagen "current" locatie
+    // UIT: direct terugzetten + coords weg
+    if (!next) {
       setPreferences((prev) => ({
         ...prev,
-        savedLocations: prev.savedLocations.filter(
-          (l) => l.source !== "current"
-        ),
+        useCurrentLocation: false,
+        currentCoords: undefined,
       }));
-      closePending();
-    }
-  };
 
-  const handleSavePending = () => {
-    if (!pendingType) return;
-
-    const id =
-      pendingType === "current" ? "current" : slugify(pendingName || "regio");
-
-    const newLoc: SavedLocation = {
-      id,
-      name: pendingName,
-      radius: pendingRadius,
-      label: pendingLabel,
-      source: pendingType,
-    };
-
-    upsertSavedLocation(newLoc);
-
-    toast("Opgeslagen", {
-      description: `${newLoc.label}: ${newLoc.name} (${newLoc.radius} km)`,
-    });
-
-    // na opslaan: bij region -> picker open laten zodat je snel meer kan kiezen
-    if (pendingType === "region") {
-      closePending();
-      setShowPicker(true);
-    } else {
-      closePending();
-    }
-  };
-
-  const handleContinue = () => {
-    if (!hasAnySaved && !preferences.useCurrentLocation) {
-      toast("Kies eerst een locatie", {
-        description: "Zet live locatie aan of voeg een regio toe.",
+      toast("Live locatie uit", {
+        description: "We gebruiken je GPS niet meer.",
       });
       return;
     }
 
-    savePreferences({ ...preferences, hasCompletedSetup: true });
-    router.push("/voor-mij");
+    // AAN: alvast flag aan (voor UI), daarna GPS
+    setPreferences((prev) => ({ ...prev, useCurrentLocation: true }));
+
+    if (!navigator.geolocation) {
+      toast("Locatie niet beschikbaar", {
+        description: "Je browser ondersteunt geen GPS.",
+      });
+      setPreferences((prev) => ({
+        ...prev,
+        useCurrentLocation: false,
+        currentCoords: undefined,
+      }));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+        // 1) coords opslaan
+        setPreferences((prev) => ({
+          ...prev,
+          currentCoords: coords,
+          useCurrentLocation: true,
+        }));
+
+        // 2) reverse geocode → match naar jouw Brabant-lijst
+        try {
+          const place = await reverseGeocodeToPlaceName(coords);
+          const matched = place
+            ? matchToAvailableLocation(place, availableLocations)
+            : null;
+
+          if (!matched) {
+            toast("Locatie opgehaald", {
+              description: place
+                ? `Plaatsnaam '${place}' matcht niet met jouw lijst.`
+                : "Geen plaatsnaam gevonden.",
+            });
+            return;
+          }
+
+          setPreferences((prev) => {
+            const existing = prev.savedLocations.find(
+              (l) => l.id === "current"
+            );
+            const radius = existing?.radius ?? 15;
+
+            const nextCurrent: SavedLocation = {
+              id: "current",
+              name: matched, // ✅ bv. Tilburg
+              radius,
+              label: DEFAULT_LABEL,
+              source: "current",
+            };
+
+            const nextSaved = existing
+              ? prev.savedLocations.map((l) =>
+                  l.id === "current" ? nextCurrent : l
+                )
+              : [...prev.savedLocations, nextCurrent];
+
+            return { ...prev, savedLocations: nextSaved };
+          });
+
+          toast("Locatie geactiveerd", {
+            description: `We filteren nu rond ${matched}.`,
+          });
+        } catch {
+          toast("Locatie geactiveerd", {
+            description: "GPS is aan, maar plaatsnaam ophalen lukt niet.",
+          });
+        }
+      },
+      () => {
+        toast("Locatie geweigerd", {
+          description: "Geef toestemming om je huidige locatie te gebruiken.",
+        });
+        setPreferences((prev) => ({
+          ...prev,
+          useCurrentLocation: false,
+          currentCoords: undefined,
+        }));
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  };
+
+  const handleAddRegion = (name: string) => {
+    const id = name.toLowerCase().replace(/\s+/g, "-");
+
+    const exists = (preferences.savedLocations ?? []).some(
+      (l) => l.source === "region" && l.id === id
+    );
+    if (exists) {
+      setShowLocationPicker(false);
+      return;
+    }
+
+    const regionLoc: SavedLocation = {
+      id,
+      name,
+      radius: 15,
+      label: DEFAULT_LABEL,
+      source: "region",
+    };
+
+    setPreferences((prev) => ({
+      ...prev,
+      savedLocations: [...(prev.savedLocations ?? []), regionLoc],
+    }));
+
+    toast("Regio toegevoegd", { description: name });
+    setShowLocationPicker(false);
+    setSearch("");
+  };
+
+  const handleRemoveLocation = (id: string) => {
+    setPreferences((prev) => ({
+      ...prev,
+      savedLocations: (prev.savedLocations ?? []).filter((l) => l.id !== id),
+    }));
+  };
+
+  const handleContinueInternal = () => {
+    onContinue?.();
   };
 
   return (
-    <div className="space-y-6 pb-24">
-      {/* Live location toggle */}
+    <div className="space-y-6">
+      {/* Use Current Location */}
       <div className="bg-card rounded-lg p-4 border border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Navigation className="w-5 h-5 text-muted-foreground" />
             <span className="font-medium text-foreground">
-              Gebruik mijn live locatie
+              Gebruik mijn locatie
             </span>
           </div>
+
           <Switch
             checked={preferences.useCurrentLocation}
-            onCheckedChange={handleToggleLive}
+            onCheckedChange={handleToggleLocation}
           />
         </div>
+
         <p className="text-xs text-muted-foreground mt-2">
-          Alleen aanzetten als je automatisch lokaal nieuws wilt filteren.
+          Alleen aanzetten als je lokaal nieuws automatisch wilt filteren.
         </p>
       </div>
 
-      {/* Map only when live location is enabled and pending current */}
-      {preferences.useCurrentLocation && (
-        <div className="space-y-3">
-          <label className="text-sm text-muted-foreground">
-            Live locatie radius:
-          </label>
-
+      {/* Live locatie: map + radius */}
+      {preferences.useCurrentLocation ? (
+        <>
           <div className="relative aspect-square bg-card rounded-lg border border-border overflow-hidden">
             <div className="absolute inset-0 bg-secondary/50 flex items-center justify-center">
               <div className="relative">
@@ -227,157 +340,130 @@ export function LocationSelector() {
               </p>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Pending editor (for live or region) */}
-      {pendingType && (
-        <div className="bg-card rounded-lg border border-border p-4 space-y-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-sm text-muted-foreground">
-                {pendingType === "current" ? "Live locatie" : "Regio"}
-              </p>
-              <p className="font-semibold text-foreground truncate">
-                {pendingName}
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={closePending}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Sluiten"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Radius */}
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Radius instellen:</p>
+          <div className="space-y-3">
+            <label className="text-sm text-muted-foreground">
+              Live locatie radius:
+            </label>
             <div className="flex gap-2 flex-wrap">
-              {radiusOptions.map((r) => (
+              {radiusOptions.map((radius) => (
                 <Button
-                  key={r}
-                  type="button"
-                  variant={pendingRadius === r ? "pillActive" : "pill"}
+                  key={radius}
+                  variant={liveRadius === radius ? "pillActive" : "pill"}
                   size="pill"
-                  onClick={() => setPendingRadius(r)}
+                  onClick={() => setLiveRadius(radius)}
+                  type="button"
                 >
-                  {r} km
+                  {radius} km
                 </Button>
               ))}
             </div>
           </div>
+        </>
+      ) : (
+        <>
+          {/* Live locatie UIT: regio lijst + zoek */}
+          <div className="space-y-3">
+            <label className="text-sm text-muted-foreground">
+              Kies een regio:
+            </label>
 
-          {/* Label */}
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Opslaan als:</p>
-            <div className="flex gap-2 flex-wrap">
-              {LABELS.map((l) => (
-                <Button
-                  key={l}
-                  type="button"
-                  variant={pendingLabel === l ? "pillActive" : "pill"}
-                  size="pill"
-                  onClick={() => setPendingLabel(l)}
-                >
-                  {l}
-                </Button>
-              ))}
+            <div className="space-y-2">
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Zoek regio…"
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/30"
+              />
+
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-2"
+                onClick={() => setShowLocationPicker((s) => !s)}
+                type="button"
+              >
+                <Plus className="w-4 h-4" />
+                Regio toevoegen
+              </Button>
+
+              {showLocationPicker ? (
+                <div className="bg-card border border-border rounded-lg p-3 max-h-64 overflow-y-auto">
+                  <div className="grid grid-cols-2 gap-2">
+                    {filteredAvailable.map((location) => (
+                      <button
+                        key={location}
+                        type="button"
+                        onClick={() => handleAddRegion(location)}
+                        className="text-left px-3 py-2 text-sm text-foreground hover:bg-secondary rounded-md transition-colors"
+                      >
+                        {location}
+                      </button>
+                    ))}
+
+                    {filteredAvailable.length === 0 ? (
+                      <div className="col-span-2 text-sm text-muted-foreground px-1 py-2">
+                        Geen resultaten.
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
-
-          <Button type="button" className="w-full" onClick={handleSavePending}>
-            Opslaan
-          </Button>
-        </div>
+        </>
       )}
 
-      {/* Saved locations chips */}
+      {/* Saved locations */}
       <div className="space-y-3">
         <label className="text-sm text-muted-foreground">
           Opgeslagen locaties:
         </label>
 
-        {preferences.savedLocations.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nog niets opgeslagen.</p>
-        ) : (
-          <div className="flex gap-2 flex-wrap">
-            {preferences.savedLocations.map((loc) => (
-              <div
-                key={loc.id}
-                className="flex items-center gap-2 bg-card border border-border rounded-full px-3 py-1.5"
-              >
-                <span className="text-sm text-foreground">
-                  {loc.label}: {loc.name} • {loc.radius} km
+        <div className="flex gap-2 flex-wrap">
+          {(preferences.savedLocations ?? []).map((location) => (
+            <div
+              key={location.id}
+              className="flex items-center gap-2 bg-card border border-border rounded-full px-3 py-1.5"
+            >
+              <span className="text-sm text-foreground">
+                {location.name}
+                <span className="text-muted-foreground">
+                  {" "}
+                  • {location.radius} km
                 </span>
-                <button
-                  type="button"
-                  onClick={() => removeSavedLocation(loc.id)}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label={`Verwijder ${loc.name}`}
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => handleRemoveLocation(location.id)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={`Verwijder ${location.name}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+
+          {(preferences.savedLocations ?? []).length === 0 ? (
+            <div className="text-sm text-muted-foreground">
+              Nog geen locaties opgeslagen.
+            </div>
+          ) : null}
+        </div>
       </div>
 
-      {/* Region picker (when live location off) */}
-      {!preferences.useCurrentLocation && (
-        <div className="space-y-3">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full justify-start gap-2"
-            onClick={() => setShowPicker((v) => !v)}
-          >
-            <Plus className="w-4 h-4" />
-            Regio toevoegen
+      {/* Optional internal CTA */}
+      {onContinue ? (
+        <div className="pt-2 pb-24">
+          <Button className="w-full" size="lg" onClick={handleContinueInternal}>
+            Ga verder
           </Button>
-
-          {showPicker && (
-            <div className="bg-card border border-border rounded-lg p-3">
-              <div className="relative mb-3">
-                <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Zoek een regio…"
-                  className="w-full pl-9 pr-3 py-2 rounded-md bg-background border border-border text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
-                />
-              </div>
-
-              <div className="max-h-56 overflow-y-auto">
-                <div className="grid grid-cols-2 gap-2">
-                  {filteredRegions.map((name) => (
-                    <button
-                      key={name}
-                      type="button"
-                      onClick={() => {
-                        setShowPicker(false);
-                        openPendingRegion(name);
-                      }}
-                      className="text-left px-3 py-2 text-sm text-foreground hover:bg-secondary rounded-md transition-colors"
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div>
-
-                {filteredRegions.length === 0 && (
-                  <p className="text-sm text-muted-foreground px-2 py-2">
-                    Geen resultaten.
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Je kunt deze instellingen later altijd aanpassen.
+          </p>
         </div>
+      ) : (
+        <div className="pb-10" />
       )}
     </div>
   );

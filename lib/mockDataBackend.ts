@@ -471,4 +471,128 @@ export const backendMockArticles: BackendArticle[] = [
     theme: "Nieuws & maatschappij",
     createdAt: "2025-12-30T00:15:00.000Z",
   },
+  {
+    _id: "ob-6",
+    author: "Evie Hendriks",
+    title:
+      "Zes shetlandpony's na dag in de sneeuw terug in de wei: 'Goede uitbrekers'",
+    teaser:
+      "Zes shetlandpony’s die zondagavond in Haaren ontsnapten, werden na ruim een dag in de kou en sneeuw teruggevonden in Oisterwijk en staan inmiddels weer veilig in de wei.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/768/432/0.50/0.54/cmV2aXNpb25zLzQ4MTUzOTMtMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1XM1Q4SG9hNFEyRUpiU2FvMGlXZTFNSWZvZDBjSiUyRkNQaDVBZmltSHdlb0klM0Qmc3A9ciZzcHI9aHR0cHMmc3I9YiZzdD0yMDI1LTAxLTAxVDEwJTNBNDAlM0EwMFomc3Y9MjAyMC0xMC0wMg==",
+
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "De zes shetlandpony’s die zondagavond in Haaren aan de aandacht van de politie wisten te ontsnappen, staan sinds maandagmiddag weer veilig achter het draad in de wei. Agenten kregen een melding dat de dieren over het fietspad liepen en filmden hen, maar toen ze probeerden de pony’s terug te brengen, gingen die er vandoor.",
+      },
+      {
+        type: "paragraph",
+        text: "Op beelden die de politie Groene Beemden op Instagram deelde, is te zien hoe de pony’s vrolijk door de sneeuw lopen. Het plan was om ze na de opnames terug te brengen naar hun weide, maar de dieren besloten daar anders over en sloegen op de vlucht.",
+      },
+      {
+        type: "paragraph",
+        text: "Voor mede-eigenaar Jeffrey Smulder uit Haaren kwam het nieuws als een verrassing. Een vriend bij wie de pony’s in de wei staan, wist al van de vermissing. Jeffrey ontdekte het pas toen hij de beelden online zag verschijnen. “Zes zwarte shetlandpony’s in Haaren die waren verdwenen, toen wist ik genoeg.”",
+      },
+      {
+        type: "paragraph",
+        text: "Na ruim een nacht en dag op avontuur te zijn geweest in de sneeuw en de kou kwam het verlossende telefoontje. Mensen belden Jeffrey dat ze de pony’s hadden gezien op het industrieterrein in Oisterwijk, zo’n 2,5 kilometer van hun wei vandaan.",
+      },
+      {
+        type: "paragraph",
+        text: "Samen met twee vrienden ging Jeffrey direct op pad. Ook de politie kwam kijken hoe het met de dieren ging. “Ze hebben gelukkig een dikke vacht, dus ze maken het goed. Ze liepen het half uurtje terug naar de wei mooi mee en kregen meteen hooi om te eten.”",
+      },
+      {
+        type: "paragraph",
+        text: "De politie vermoedt dat de pony’s schrokken van vuurwerk en daarom zondagavond uitbraken. Hoe ze precies uit de wei konden ontsnappen, is voor de eigenaren nog steeds onduidelijk. “Er stonden ook een paar paarden los, maar die gingen er niet vandoor. Shetlandpony’s zijn goede uitbrekers,” lacht Jeffrey.",
+      },
+      {
+        type: "paragraph",
+        text: "Inmiddels staan de zes pony’s weer veilig achter het draad en zijn ze gezond. “We zijn blij dat ze weer terug zijn. Nu is het afkloppen dat dat zo blijft.”",
+      },
+    ],
+
+    aiSummary: [
+      {
+        type: "paragraph",
+        text: "Zes shetlandpony’s die zondagavond in Haaren ontsnapten en zelfs door de politie werden gefilmd terwijl ze door de sneeuw over een fietspad liepen, staan sinds maandagmiddag weer veilig in de wei. Pogingen van agenten om de dieren terug te brengen mislukten, waarna de pony’s op de vlucht sloegen.",
+      },
+      {
+        type: "paragraph",
+        text: "Na ruim een dag in kou en sneeuw werden de dieren teruggevonden op een industrieterrein in Oisterwijk, zo’n 2,5 kilometer van hun wei. Met hulp van vrienden en politie liepen ze rustig terug en kregen ze direct hooi.",
+      },
+      {
+        type: "paragraph",
+        text: "Volgens de eigenaar hebben de pony’s de kou goed doorstaan dankzij hun dikke wintervacht. De politie denkt dat vuurwerk de ontsnapping veroorzaakte. Inmiddels staan alle zes de pony’s weer veilig achter het draad en zijn ze gezond.",
+      },
+    ],
+    aiKeyPoints: [
+      "Zes pony’s ontsnapt in Haaren",
+      "Politie filmde dieren op fietspad",
+      "Pony’s dag spoorloos in sneeuw",
+      "Teruggevonden in Oisterwijk",
+      "Dieren weer veilig in wei",
+    ],
+    regionName: "Haaren",
+    theme: "Nieuws & maatschappij",
+    createdAt: "2026-01-05T00:15:00.000Z",
+  },
+  {
+    _id: "ob-7",
+    author: "Femke de Jong",
+    title:
+      "Bijzonder natuurfenomeen boven Tilburg: onweer tijdens een sneeuwbui",
+    teaser:
+      "Tilburg en omgeving kregen zaterdagochtend te maken met een zeldzaam natuurverschijnsel: sneeuwval in combinatie met onweer, ook wel thundersnow genoemd.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/1024/576/0.50/0.50/cmV2aXNpb25zLzQ4MTQzOTAtMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1pJTJGNnRaenpPWDB0R2xIdTZTTlNOT2YzSkJwZ2dmJTJGa1FIeTJ6RG1lbEVXayUzRCZzcD1yJnNwcj1odHRwcyZzcj1iJnN0PTIwMjUtMDEtMDFUMTAlM0E0MCUzQTAwWiZzdj0yMDIwLTEwLTAy",
+
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "Wakker worden in een witte wonderwereld is al bijzonder, maar wanneer het sneeuwt en tegelijkertijd onweert is dat extra speciaal. Dit zeldzame natuurfenomeen was zaterdagochtend te zien in Tilburg en omgeving.",
+      },
+      {
+        type: "paragraph",
+        text: "Volgens weerman Johnny Willemsen van Weerplaza is onweer tijdens een sneeuwbui zeer ongewoon. Het verschijnsel heeft zelfs een eigen naam: thundersnow. Wereldwijd wordt het gemiddeld slechts enkele keren per jaar waargenomen, waardoor het in Nederland soms jarenlang niet voorkomt.",
+      },
+      {
+        type: "paragraph",
+        text: "Voor thundersnow moeten bijzondere omstandigheden samenkomen. De lucht moet koud genoeg zijn om sneeuw te veroorzaken, maar diezelfde koude lucht bevat vaak te weinig temperatuurverschillen om normaal onweer mogelijk te maken. Juist die combinatie maakt het verschijnsel zo zeldzaam.",
+      },
+      {
+        type: "paragraph",
+        text: "Onweer met sneeuw verschilt sterk van een zomerse onweersbui. Sneeuwkristallen weerkaatsen de bliksem, waardoor deze veel feller lijkt en een witte tot goudkleurige gloed krijgt in plaats van het gebruikelijke blauwe of paarse licht.",
+      },
+      {
+        type: "paragraph",
+        text: "Daarnaast dempt de sneeuw de donder aanzienlijk. Het geluid reikt vaak niet verder dan drie tot vijf kilometer. Wie tijdens thundersnow donder hoort, doet er daarom verstandig aan direct een veilige plek op te zoeken.",
+      },
+    ],
+
+    aiSummary: [
+      {
+        type: "paragraph",
+        text: "Tilburg en omgeving werden zaterdagochtend getrakteerd op een zeldzaam natuurverschijnsel: sneeuwval gecombineerd met onweer, ook wel thundersnow genoemd. Dit fenomeen ontstaat slechts onder uitzonderlijke weersomstandigheden en komt wereldwijd maar enkele keren per jaar voor.",
+      },
+      {
+        type: "paragraph",
+        text: "Volgens weerman Johnny Willemsen vereist thundersnow een delicate balans tussen koude lucht die sneeuw mogelijk maakt en voldoende instabiliteit voor onweer, een combinatie die in Nederland zelden voorkomt. Daardoor kunnen er soms jarenlang geen waarnemingen zijn.",
+      },
+      {
+        type: "paragraph",
+        text: "Thundersnow verschilt sterk van zomeronweer. Door de reflectie van sneeuwkristallen oogt de bliksem opvallend fel en wit tot goudkleurig, terwijl de sneeuw de donder juist sterk dempt. Wie tijdens dit verschijnsel donder hoort, bevindt zich meestal dicht bij de inslag en moet daarom snel beschutting zoeken.",
+      },
+    ],
+    aiKeyPoints: [
+      "Zeldzaam verschijnsel waargenomen in Tilburg",
+      "Sneeuwval en onweer tegelijk",
+      "Fenomeen heet thundersnow",
+      "Komt wereldwijd maar enkele keren per jaar voor",
+      "Bliksem feller, donder sterk gedempt",
+    ],
+    regionName: "Tilburg",
+    theme: "Natuur & milieu",
+    createdAt: "2026-01-05T09:00:00.000Z",
+  },
 ];

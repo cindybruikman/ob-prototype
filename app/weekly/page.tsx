@@ -73,7 +73,12 @@ export default function WeeklyPage() {
     }));
   }, [filteredArticles]);
 
-  // labels uit savedLocations
+  // labels: current + regions
+  const currentLocation = useMemo(() => {
+    if (!preferences) return null;
+    return (preferences.savedLocations ?? []).find((l) => l.id === "current");
+  }, [preferences]);
+
   const regionLocations = useMemo(() => {
     if (!preferences) return [];
     return (preferences.savedLocations ?? []).filter(
@@ -81,13 +86,17 @@ export default function WeeklyPage() {
     );
   }, [preferences]);
 
-  const locationLabel =
-    regionLocations.length > 0
-      ? regionLocations.map((l) => l.name).join(", ")
-      : "Alle locaties";
+  const locationLabel = preferences?.useCurrentLocation
+    ? currentLocation?.name ?? "Huidige locatie"
+    : regionLocations.length > 0
+    ? regionLocations.map((l) => l.name).join(", ")
+    : "Alle locaties";
 
-  const radiusLabel =
-    regionLocations.length === 1 ? `${regionLocations[0].radius} km` : "";
+  const radiusLabel = preferences?.useCurrentLocation
+    ? `${currentLocation?.radius ?? 15} km`
+    : regionLocations.length === 1
+    ? `${regionLocations[0].radius} km`
+    : "";
 
   if (!preferences) {
     return (

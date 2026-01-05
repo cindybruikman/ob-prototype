@@ -16,6 +16,22 @@ export function Switch({
   disabled = false,
   className,
 }: SwitchProps) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
+
+  // ✅ voorkomt SSR/CSR mismatch als checked uit localStorage komt
+  if (!mounted) {
+    return (
+      <span
+        aria-hidden
+        className={cn(
+          "relative inline-flex h-6 w-11 items-center rounded-full bg-secondary opacity-60",
+          className
+        )}
+      />
+    );
+  }
+
   return (
     <button
       type="button"

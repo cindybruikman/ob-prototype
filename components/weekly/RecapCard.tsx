@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Newspaper, Trophy, Lightbulb, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getPreferences } from "@/lib/preferences";
 
 interface RecapArticle {
   id: string;
@@ -23,8 +24,46 @@ const iconMap: Record<string, LucideIcon> = {
   business: Lightbulb,
 };
 
+function normalize(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’]/g, "")
+    .replace(/-/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function RecapCard({ category, icon, articles }: RecapCardProps) {
   const Icon = iconMap[icon] ?? Newspaper;
+
+  const prefs = getPreferences();
+
+  const filtered = (() => {
+    // ✅ Live locatie aan → filter op current plaatsnaam
+    if (prefs.useCurrentLocation) {
+      const current = prefs.savedLocations.find((l) => l.id === "current");
+      const currentName = current?.name?.trim();
+      if (!currentName) return articles;
+
+      const target = normalize(currentName);
+      return articles.filter((a) => normalize(a.region).includes(target));
+    }
+
+    // ✅ Anders: filter op gekozen regio's (source === "region")
+    const picked = prefs.savedLocations
+      .filter((l) => l.source === "region")
+      .map((l) => l.name);
+
+    if (picked.length === 0) return articles;
+
+    const pickedNorm = picked.map(normalize);
+    return articles.filter((a) => {
+      const r = normalize(a.region);
+      return pickedNorm.some((p) => r.includes(p));
+    });
+  })();
 
   return (
     <section className="bg-card rounded-xl p-4 space-y-4 border border-border">
@@ -34,7 +73,7 @@ export function RecapCard({ category, icon, articles }: RecapCardProps) {
       </div>
 
       <div className="space-y-4">
-        {articles.map((article) => (
+        {filtered.map((article) => (
           <div key={article.id} className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-bold text-foreground">

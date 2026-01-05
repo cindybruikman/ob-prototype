@@ -1,6 +1,7 @@
 import type { BackendArticle } from "@/lib/mockDataBackend";
 import { formatDutchDate } from "@/lib/date";
 import type { ContentBlock } from "@/lib/mockDataBackend";
+import { getCoordsForRegion } from "@/lib/regionCoords";
 
 export type UIArticle = {
   id: string;
@@ -12,6 +13,7 @@ export type UIArticle = {
   category: string;
   imageUrl: string;
   publishedAt: string;
+  coords?: { lat: number; lng: number };
   isNew?: boolean;
   isTrending?: boolean;
   aiSummaryBlocks?: ContentBlock[];
@@ -90,6 +92,8 @@ export function mapBackendToUI(a: BackendArticle): UIArticle {
     .filter(Boolean)
     .join("\n\n");
 
+  const coords = getCoordsForRegion(a.regionName);
+
   return {
     id: a._id,
     title: a.title,
@@ -104,5 +108,6 @@ export function mapBackendToUI(a: BackendArticle): UIArticle {
     updatedAt: "", // ✅ toevoegen (of formatDutchDate(a.createdAt))
     isTrending: false,
     isNew: false,
+    coords: coords ?? undefined,
   };
 }

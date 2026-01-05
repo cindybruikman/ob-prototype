@@ -13,6 +13,17 @@ import { backendMockArticles } from "@/lib/mockDataBackend";
 import { mapBackendToUI } from "@/lib/mapBackendToUI";
 import { getPreferences, type UserPreferences } from "@/lib/preferences";
 
+function normalize(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['’]/g, "")
+    .replace(/-/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export default function VoorMijPage() {
   const router = useRouter();
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
@@ -38,23 +49,45 @@ export default function VoorMijPage() {
   // 2) backend mock -> UI model
   const articles = useMemo(() => backendMockArticles.map(mapBackendToUI), []);
 
-  // 3) filter op savedLocations
+  // 3) filter op savedLocations (live of region)
   const filteredArticles = useMemo(() => {
     if (!preferences) return [];
 
+    // ✅ Live locatie aan → filter op current plaatsnaam
+    if (preferences.useCurrentLocation) {
+      const current = (preferences.savedLocations ?? []).find(
+        (l) => l.id === "current"
+      );
+
+      const currentName = current?.name?.trim(); // bv "Tilburg"
+      if (!currentName) return articles;
+
+      const target = normalize(currentName);
+      return articles.filter((a) => normalize(a.location).includes(target));
+    }
+
+    // ✅ Anders: filter op gekozen regio's
     const selectedNames = (preferences.savedLocations ?? [])
       .filter((l) => l.source === "region")
-      .map((l) => l.name.toLowerCase());
+      .map((l) => l.name);
 
     // niets gekozen => alles tonen (prototype)
     if (selectedNames.length === 0) return articles;
 
-    return articles.filter((a) =>
-      selectedNames.some((name) => a.location.toLowerCase().includes(name))
-    );
+    const selectedNorm = selectedNames.map(normalize);
+
+    return articles.filter((a) => {
+      const loc = normalize(a.location);
+      return selectedNorm.some((name) => loc.includes(name));
+    });
   }, [articles, preferences]);
 
-  // 4) header labels: pas berekenen als preferences bestaat
+  // 4) header labels
+  const currentLocation = useMemo(() => {
+    if (!preferences) return null;
+    return (preferences.savedLocations ?? []).find((l) => l.id === "current");
+  }, [preferences]);
+
   const regionLocations = useMemo(() => {
     if (!preferences) return [];
     return (preferences.savedLocations ?? []).filter(
@@ -62,13 +95,17 @@ export default function VoorMijPage() {
     );
   }, [preferences]);
 
-  const locationLabel =
-    regionLocations.length > 0
-      ? regionLocations.map((l) => l.name).join(", ")
-      : "Alle locaties";
+  const locationLabel = preferences?.useCurrentLocation
+    ? currentLocation?.name ?? "Huidige locatie"
+    : regionLocations.length > 0
+    ? regionLocations.map((l) => l.name).join(", ")
+    : "Alle locaties";
 
-  const radiusLabel =
-    regionLocations.length === 1 ? `${regionLocations[0].radius} km` : "";
+  const radiusLabel = preferences?.useCurrentLocation
+    ? `${currentLocation?.radius ?? 15} km`
+    : regionLocations.length === 1
+    ? `${regionLocations[0].radius} km`
+    : "";
 
   if (!preferences) {
     return (
@@ -107,33 +144,33 @@ export default function VoorMijPage() {
             <div
               aria-hidden
               className="
-      absolute
-      -right-12
-      -top-10
-      w-24
-      h-20
-      bg-[#e00]
-      rounded-2xl
-      rotate-[-20deg]
-      z-0
-    "
+                absolute
+                -right-12
+                -top-10
+                w-24
+                h-20
+                bg-[#e00]
+                rounded-2xl
+                rotate-[-20deg]
+                z-0
+              "
             />
 
             {/* Search icon */}
             <button
               type="button"
               className="
-      relative
-      z-10
-      w-10
-      h-10
-      flex
-      items-center
-      justify-center
-      text-white
-      hover:opacity-90
-      transition
-    "
+                relative
+                z-10
+                w-10
+                h-10
+                flex
+                items-center
+                justify-center
+                text-white
+                hover:opacity-90
+                transition
+              "
               aria-label="Zoeken"
             >
               <Search className="h-5 w-5" />
@@ -141,8 +178,6 @@ export default function VoorMijPage() {
           </div>
         </div>
       </header>
-
-      {/* ✅ 1 container voor ALLES */}
 
       {/* Weekly recap CTA */}
       <div className="mx-auto w-full max-w-[808px] px-4 pt-3">
@@ -154,6 +189,7 @@ export default function VoorMijPage() {
           {locationLabel}
           {radiusLabel ? ` • ${radiusLabel}` : ""}
         </Link>
+
         <Link
           href="/weekly"
           className="block rounded-xl border border-white/20 bg-card p-4 hover:bg-white/5 transition"
@@ -168,7 +204,6 @@ export default function VoorMijPage() {
         </Link>
       </div>
 
-      {/* Compact cards */}
       {/* Artikelen */}
       <main className="py-4 space-y-3">
         {filteredArticles.map((article) => (
