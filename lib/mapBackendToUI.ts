@@ -1,5 +1,6 @@
 import type { BackendArticle } from "@/lib/mockDataBackend";
 import { formatDutchDate } from "@/lib/date";
+import type { ContentBlock } from "@/lib/mockDataBackend";
 
 export type UIArticle = {
   id: string;
@@ -13,6 +14,8 @@ export type UIArticle = {
   publishedAt: string;
   isNew?: boolean;
   isTrending?: boolean;
+  aiSummaryBlocks?: ContentBlock[];
+  updatedAt: string;
 };
 
 function pickString(...values: Array<unknown>): string {
@@ -81,18 +84,24 @@ export function mapBackendToUI(a: BackendArticle): UIArticle {
     .filter(Boolean)
     .join("\n\n");
 
+  const summary = (a.aiSummary ?? [])
+    .filter((b: any) => b?.type === "paragraph" || b?.type === "quote")
+    .map((b: any) => (b.type === "quote" ? `“${b.text ?? ""}”` : b.text ?? ""))
+    .filter(Boolean)
+    .join("\n\n");
+
   return {
     id: a._id,
     title: a.title,
-    summary:
-      (Array.isArray(a.aiSummary) ? a.aiSummary.join(" ") : a.aiSummary) ||
-      a.teaser,
+    summary: summary || a.teaser,
+
     keyPoints: a.aiKeyPoints || [],
     fullContent,
-    location: a.regionName,
-    category: a.theme,
+    location: pickRegionName(a) || "Onbekende regio",
+    category: pickTheme(a) || "Onbekend thema",
     imageUrl: a.imageUrl ?? "",
     publishedAt: formatDutchDate(a.createdAt),
+    updatedAt: "", // ✅ toevoegen (of formatDutchDate(a.createdAt))
     isTrending: false,
     isNew: false,
   };

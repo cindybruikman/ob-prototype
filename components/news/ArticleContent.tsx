@@ -150,7 +150,16 @@ export function ArticleContent({ article }: ArticleContentProps) {
         )}
 
         {viewMode === "summary" && (
-          <p className="text-foreground leading-relaxed">{article.summary}</p>
+          <div className="space-y-4">
+            {article.summary
+              .split("\n\n")
+              .filter(Boolean)
+              .map((p, i) => (
+                <p key={i} className="text-foreground leading-relaxed">
+                  {p}
+                </p>
+              ))}
+          </div>
         )}
 
         {viewMode === "full" && (

@@ -11,7 +11,7 @@ export interface BackendArticle {
   title: string;
   teaser: string;
   contentBlocks: ContentBlock[];
-  aiSummary: string[];
+  aiSummary: ContentBlock[];
   aiKeyPoints: string[];
   regionName: string;
   theme: string;
@@ -75,13 +75,25 @@ export const backendMockArticles: BackendArticle[] = [
       },
     ],
     aiSummary: [
-      "Na recente uitbraken van vogelgriep in Brabant zijn opnieuw grote aantallen dieren geruimd. In Deurne moesten 162.000 vleeskuikens worden afgemaakt, eerder deze maand nog eens 80.000 bij een bedrijf in Uitwijk. De maatregelen zijn bedoeld om verdere verspreiding van het zeer besmettelijke virus te voorkomen.",
+      {
+        type: "paragraph",
+        text: "Na recente uitbraken van vogelgriep in Brabant zijn opnieuw grote aantallen dieren geruimd. In Deurne moesten 162.000 vleeskuikens worden afgemaakt, eerder deze maand nog eens 80.000 bij een bedrijf in Uitwijk. De maatregelen zijn bedoeld om verdere verspreiding van het zeer besmettelijke virus te voorkomen.",
+      },
 
-      "Vogelgriep komt bij vrijwel alle vogelsoorten voor en kan zich verspreiden via direct contact, de lucht en besmet materiaal. Wilde trekvogels spelen een belangrijke rol in het verspreiden van het virus. Besmette vogels worden ernstig ziek of sterven, afhankelijk van de variant van het virus.",
+      {
+        type: "paragraph",
+        text: "Vogelgriep komt bij vrijwel alle vogelsoorten voor en kan zich verspreiden via direct contact, de lucht en besmet materiaal. Wilde trekvogels spelen een belangrijke rol in het verspreiden van het virus. Besmette vogels worden ernstig ziek of sterven, afhankelijk van de variant van het virus.",
+      },
 
-      "Voor mensen is besmetting zeldzaam en meestal mild, maar huisdieren zoals katten kunnen ernstig ziek worden. Daarom gelden er strenge maatregelen, waaronder een landelijke ophokplicht voor pluimvee, hobbykippen en watervogels. Wedstrijden en tentoonstellingen met deze dieren zijn voorlopig verboden.",
+      {
+        type: "paragraph",
+        text: "Voor mensen is besmetting zeldzaam en meestal mild, maar huisdieren zoals katten kunnen ernstig ziek worden. Daarom gelden er strenge maatregelen, waaronder een landelijke ophokplicht voor pluimvee, hobbykippen en watervogels. Wedstrijden en tentoonstellingen met deze dieren zijn voorlopig verboden.",
+      },
 
-      "Volgens experts vormt besmet voedsel geen risico voor mensen. Vlees en eieren van besmette dieren komen niet in de winkel terecht en er is geen bewijs dat vogelgriep via voeding wordt overgedragen. Waakzaamheid en naleving van de maatregelen blijven essentieel om verdere uitbraken te voorkomen.",
+      {
+        type: "paragraph",
+        text: "Volgens experts vormt besmet voedsel geen risico voor mensen. Vlees en eieren van besmette dieren komen niet in de winkel terecht en er is geen bewijs dat vogelgriep via voeding wordt overgedragen. Waakzaamheid en naleving van de maatregelen blijven essentieel om verdere uitbraken te voorkomen.",
+      },
     ],
 
     aiKeyPoints: [
@@ -91,7 +103,7 @@ export const backendMockArticles: BackendArticle[] = [
       "Zeldzaam overdraagbaar van vogel op mens",
       "Ophokplicht geldt voor pluimvee en hobbydieren",
     ],
-    regionName: "Eindhoven",
+    regionName: "Deurne",
     theme: "Nieuws & maatschappij",
     createdAt: "2025-12-28T00:15:00.000Z",
   },
@@ -115,7 +127,7 @@ export const backendMockArticles: BackendArticle[] = [
       },
       {
         type: "paragraph",
-        text: "Gevaarlijk land\nCongo is een land waar geweld en instabiliteit aan de orde van de dag zijn. “Het is een gevaarlijk land, er gebeuren vreselijke dingen.” Gracia's moeder wil niet dat haar dochter daar opgroeit en zet alles op alles om haar een betere toekomst te geven. In 2015, als Gracia 19 jaar oud is, emigreert ze naar Oekraïne om daar geneeskunde te studeren.",
+        text: "Gevaarlijk land Congo is een land waar geweld en instabiliteit aan de orde van de dag zijn. “Het is een gevaarlijk land, er gebeuren vreselijke dingen.” Gracia's moeder wil niet dat haar dochter daar opgroeit en zet alles op alles om haar een betere toekomst te geven. In 2015, als Gracia 19 jaar oud is, emigreert ze naar Oekraïne om daar geneeskunde te studeren.",
       },
       {
         type: "paragraph",
@@ -127,7 +139,7 @@ export const backendMockArticles: BackendArticle[] = [
       },
       {
         type: "paragraph",
-        text: "Oorlog\nIn het laatste jaar van Gracia’s studie breekt de oorlog in Oekraïne uit. Voor Gracia volgt een onzekere tijd. Haar allerlaatste examen kon ze op dat moment niet maken. De oorlog doorkruist de toekomst die zij voor ogen had: aan de slag gaan als arts in Oekraïne. “Ik voelde me verloren en wist niet goed wat ik moest doen.",
+        text: "Oorlog In het laatste jaar van Gracia’s studie breekt de oorlog in Oekraïne uit. Voor Gracia volgt een onzekere tijd. Haar allerlaatste examen kon ze op dat moment niet maken. De oorlog doorkruist de toekomst die zij voor ogen had: aan de slag gaan als arts in Oekraïne. “Ik voelde me verloren en wist niet goed wat ik moest doen.",
       },
       {
         type: "paragraph",
@@ -167,15 +179,23 @@ export const backendMockArticles: BackendArticle[] = [
       },
     ],
     aiSummary: [
-      "Gracia Katombe Nkulu vluchtte uit Congo om in Oekraïne arts te worden. Na het overlijden van haar ouders zette zij haar studie voort met hulp van een gastgezin. Vlak voor haar afstuderen brak de oorlog uit, waardoor zij via Polen naar Nederland vluchtte en haar diploma hier afrondde.",
-
-      "In Nederland kan zij met haar diploma niet direct als arts werken. Ze moet een langdurig erkenningstraject doorlopen en een hoog niveau Nederlands behalen. Om rond te komen werkte ze in een supermarkt en begon later via een speciaal traject in de ouderenzorg in Eindhoven.",
-
-      "Juist toen zij haar plek begon te vinden, verloor zij haar werkvergunning door gewijzigde regels rond Oekraïense vluchtelingen. Ze moest stoppen met werken en raakte zonder inkomen, terwijl haar toekomst opnieuw onzeker werd.",
-
-      "Gracia heeft inmiddels asiel aangevraagd en mag voorlopig blijven. Een nieuwe werkvergunning wordt op zijn vroegst in 2026 verwacht. Ondanks alles blijft zij vastbesloten om in de zorg te werken en haar leven in Nederland op te bouwen.",
+      {
+        type: "paragraph",
+        text: "Gracia Katombe Nkulu vluchtte uit Congo om in Oekraïne arts te worden, gedreven door haar wens om bij te dragen aan betere gezondheidszorg. Na het overlijden van beide ouders zette zij haar studie onder moeilijke omstandigheden voort. In haar laatste studiejaar brak de oorlog uit, waardoor haar toekomst in Oekraïne instortte en zij via Polen naar Nederland vluchtte, waar zij haar opleiding alsnog afrondde.",
+      },
+      {
+        type: "paragraph",
+        text: "In Nederland bleek haar medische diploma niet direct inzetbaar. Ze moet een langdurig erkenningstraject doorlopen en een zeer hoog niveau Nederlands behalen om als arts te mogen werken. Om financieel rond te komen werkte ze in een supermarkt, terwijl haar motivatie om in de zorg te werken onverminderd bleef. Via een speciaal traject voor internationals begon ze in de ouderenzorg in Eindhoven.",
+      },
+      {
+        type: "paragraph",
+        text: "Juist toen zij haar plek begon te vinden, veranderden de regels rondom Oekraïense vluchtelingen. Ze ontving een brief van de IND waarin stond dat zij Nederland moest verlaten, ondanks een geldige werkvergunning. Haar contract werd stopgezet en zij raakte zonder werk en inkomen, waardoor haar toekomst opnieuw onzeker werd.",
+      },
+      {
+        type: "paragraph",
+        text: "Gracia heeft inmiddels asiel aangevraagd en mag voorlopig in Nederland blijven. Een nieuwe werkvergunning kan pas worden aangevraagd zodra haar verblijfsstatus duidelijk is, naar verwachting niet vóór maart 2026. Ondanks alles blijft zij vastberaden om in de zorg te werken en haar leven in Nederland op te bouwen.",
+      },
     ],
-
     aiKeyPoints: [
       "Gracia vluchtte uit Congo en studeerde geneeskunde in Oekraïne",
       "Door de oorlog kwam ze in Nederland terecht",
@@ -238,7 +258,22 @@ export const backendMockArticles: BackendArticle[] = [
       },
     ],
     aiSummary: [
-      "Het structurele probleem ligt volgens hem vooral bij het ontbreken van helder beleid rond AI-gebruik binnen organisaties. Wanneer regels vaag of afwezig zijn, gaan medewerkers eigen keuzes maken met grote gevolgen voor privacy en veiligheid. Hij waarschuwt dat veel bedrijven zich nog onvoldoende hebben aangepast aan het AI-tijdperk: 'Ik vrees dat we in een tijd leven waarin heel veel data op straat terechtkomt.'",
+      {
+        type: "paragraph",
+        text: "Deze week werd opnieuw een ernstig datalek ontdekt, ditmaal bij de gemeente Eindhoven. Medewerkers voerden persoonsgegevens van kwetsbare burgers in bij een openbaar AI-platform zoals ChatGPT. Dat is in strijd met privacywetgeving en brengt grote risico’s met zich mee, omdat gevoelige gegevens zich daarna buiten de controle van de organisatie kunnen bevinden.",
+      },
+      {
+        type: "paragraph",
+        text: "De zaak is extra pijnlijk omdat de gemeente al twee jaar onder verscherpt toezicht stond van de Autoriteit Persoonsgegevens vanwege eerdere fouten bij het melden en bewaren van persoonsgegevens. Uit onderzoek blijkt dat onder meer Jeugdwet-dossiers met medische informatie van minderjarige kinderen, inclusief burgerservicenummers en foto’s, in AI-systemen terechtkwamen.",
+      },
+      {
+        type: "paragraph",
+        text: "Daarnaast zijn ook WMO-documenten met gegevens over diagnoses, verslavingen en schulden gedeeld, evenals cv’s van sollicitanten en interne reflectieverslagen. Volgens AI-expert Dimitri van Iersel is het verwijderen van deze data vrijwel onmogelijk zodra die onderdeel wordt van een trainingsmodel. Alleen het volledig schrappen van het model zou helpen, maar dat is in de praktijk niet realistisch.",
+      },
+      {
+        type: "paragraph",
+        text: "Hoewel de kans op directe schade klein lijkt, blijven risico’s zoals fraude en phishing aanwezig. Van Iersel wijst vooral op het gebrek aan duidelijke regels rondom AI-gebruik. Zonder heldere kaders nemen medewerkers zelf beslissingen, waardoor in een wereld met steeds meer AI-tools grote hoeveelheden gevoelige data op straat kunnen belanden.",
+      },
     ],
     aiKeyPoints: [
       "Gemeente Eindhoven lekte persoonsgegevens via openbare AI-tools",
@@ -300,13 +335,22 @@ export const backendMockArticles: BackendArticle[] = [
       },
     ],
     aiSummary: [
-      "Bas Zijlmans uit Oisterwijk is een petitie gestart tegen plannen voor een McDonald's met drive-thru naast de beschermde bossen en vennen van zijn woonplaats. Binnen korte tijd verzamelden zich meer dan 9000 handtekeningen. Voor Bas staat vast dat een fastfoodrestaurant op deze locatie onaanvaardbare schade zou veroorzaken aan natuur, dieren en de rust van het gebied.",
-
-      "Oisterwijk staat bekend als 'de parel in het groen' en vormt voor veel inwoners een belangrijke plek voor ontspanning en natuurbeleving. Bas wijst op de verwachte gevolgen van afval, verkeersdrukte, geluidsoverlast en lucht- en lichtvervuiling. Volgens hem zou dit het kwetsbare ecosysteem rondom het bosgebied ernstig aantasten.",
-
-      "Hoewel Bas fel tegen de plannen is, staat hij open voor alternatieve ideeën die beter passen bij het gebied, zoals voorzieningen voor natuurfotografen of jongeren. Het voorstel van de projectontwikkelaar ligt momenteel bij de gemeente. Na de jaarwisseling wil hij het gesprek aangaan met alle betrokken partijen.",
-
-      "Voor Bas is het belangrijk dat dit gesprek respectvol verloopt, ook richting de projectontwikkelaar. Zijn actie is niet bedoeld als persoonlijke aanval, maar als poging om een natuurgebied te beschermen dat voor veel inwoners van grote waarde is.",
+      {
+        type: "paragraph",
+        text: "Bas Zijlmans uit Oisterwijk is een petitie gestart tegen de mogelijke komst van een McDonald’s met drive-thru direct naast de beschermde bossen en vennen. Hij vreest dat het natuurgebied ernstige schade zal oplopen door afval, verkeer, geluidsoverlast en lucht- en lichtvervuiling. Binnen korte tijd kreeg zijn actie brede steun.",
+      },
+      {
+        type: "paragraph",
+        text: "Voor Bas heeft het gebied grote emotionele waarde. Hij groeide op in het natuurschoon rond Oisterwijk en komt er nog wekelijks om te wandelen. Volgens hem is rust essentieel voor de natuur en past een fastfoodrestaurant niet bij de identiteit van de plaats, die bekendstaat als ‘de parel in het groen’.",
+      },
+      {
+        type: "paragraph",
+        text: "Maandagmiddag stond de petitie al op ruim 9000 handtekeningen. De snelle groei verraste Bas, maar bevestigde voor hem dat veel inwoners dezelfde zorgen delen. Hij benadrukt dat hij niet tegen ontwikkeling is, maar dat plannen moeten passen bij de omgeving en het kwetsbare ecosysteem.",
+      },
+      {
+        type: "paragraph",
+        text: "Bas staat open voor alternatieven, zoals voorzieningen voor natuurfotografen, natuurbeheer of jongeren. Het voorstel van de projectontwikkelaar ligt nu bij de gemeente. In januari wil hij het gesprek aangaan met alle betrokkenen, waarbij hij het belangrijk vindt dat dit respectvol gebeurt, ook richting de ontwikkelaar.",
+      },
     ],
     aiKeyPoints: [
       "Petitie tegen McDonald's bij natuurgebied Oisterwijk gestart",
@@ -318,5 +362,113 @@ export const backendMockArticles: BackendArticle[] = [
     regionName: "Oisterwijk",
     theme: "Natuur & milieu",
     createdAt: "2025-12-29T00:15:00.000Z",
+  },
+  {
+    _id: "ob-5",
+    author: "Willem-Jan Joachems",
+    title: "Wandeling in het bos werd Yvonne (75) fataal, verdachte bekent",
+    teaser:
+      "Een tbs’er bekent dat hij Yvonne (75) in het bos bij Halsteren wurgde en verkrachtte. Hij zegt dat stemmen hem aanstuurden; nabestaanden vertelden in de rechtbank over hun verlies.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/1024/576/0.35/0.57/cmV2aXNpb25zLzQ2NTY5MDUtMS5qcGc_c2U9MjA0NS0wMS0wMVQxMCUzQTQwJTNBMDBaJnNpZz1DJTJCb2tkcEREczRCcFBhTDRoaTVRYmdwOVU5Zmd5Q0JKJTJGUU9XY0hoRXVXMCUzRCZzcD1yJnNwcj1odHRwcyZzcj1iJnN0PTIwMjUtMDEtMDFUMTAlM0E0MCUzQTAwWiZzdj0yMDIwLTEwLTAy",
+
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "75 jaar oud was Yvonne, toen ze door de bossen bij Halsteren haar dood tegemoet wandelde. Ze kwam Elias M. tegen. De tbs’er wurgde en verkrachtte haar. Elias zegt dat hij werd gedwongen door de stem van de duivel in zijn hoofd. “Mijn herinnering is dat ik haar met veel pijn en verdriet liet stikken.”",
+      },
+      {
+        type: "paragraph",
+        text: "De verdachte was met deze bekentenis helderder dan ooit. Maar nog steeds blijven er vragen en is onduidelijk wat hem echt bezielde.",
+      },
+      {
+        type: "paragraph",
+        text: "Demoon heet Iblis\nM. (33) heeft een uitgebreid verleden van psychoses, verward en agressief gedrag en is al veel onderzocht. Een wietverslaving versterkt volgens deskundigen zijn stoornissen. En Elias hoort stemmen in zijn hoofd. “Die demon die staat al jaren naast mij. Hij heet Iblis.”",
+      },
+      {
+        type: "paragraph",
+        text: "Hij had al een strafblad voor straatroof. Eind 2020 ontspoorde hij in zijn woonplaats Amsterdam. Mishandelingen, schennispleging en hij verkrachtte een vrouw die aan het hardlopen was. Hij werd gearresteerd en kreeg tbs.",
+      },
+      {
+        type: "paragraph",
+        text: "Elias belandde op Vrederust in Halsteren, op De Mare waar meer tbs’ers worden behandeld, achter hoge hekken en camera’s. In de beslotenheid van de bossen kwam M. in rustiger vaarwater, hij stabiliseerde, er waren geen incidenten en hij kreeg meer vrijheid.",
+      },
+      {
+        type: "paragraph",
+        text: "Een kus\nToch ging het op 10 oktober 2023 gruwelijk mis. “Ik hoorde God praten”, zei hij woensdag in de rechtszaal. Op datzelfde moment wandelde Yvonne (75) richting Vrederust. Haar man had haar net een kus gegeven en liep alvast naar huis. Yvonne wandelde nog een stukje door. Niet wetend dat ze de dood tegemoet liep.",
+      },
+      {
+        type: "paragraph",
+        text: "Bij het Wasven kwam ze Elias tegen. “Ik zag haar op een afstandje. Toen zag ik de duivel of demon in mijn lichaam komen. Stemmen zeiden heel luid dat het slachtoffer ook een duivel is en mij zou gaan vermoorden en seksuele dingen zou gaan doen bij mij”, vertelde Elias.",
+      },
+      {
+        type: "paragraph",
+        text: "Hij liep op haar af. De stappenteller in het mobieltje van Yvonne stopte. Om drie minuten voor vier die middag stond Yvonne stil. Of lag ze stil.",
+      },
+      {
+        type: "paragraph",
+        text: "Getuige\nYvonne werd verkracht. Elias liet zijn dna achter. De rechter vroeg hoe het toch kan dat zijn sperma werd gevonden op de onderbroek en spijkerbroek van het slachtoffer. “Dat komt toch niet uit de lucht vallen?” Elias zegt dat hij dat zich niet kan herinneren. “Het is gewoon te erg wat er is gebeurd, te moeilijk om het er over te hebben.” De hele dag ontweek hij vragen over de verkrachting. De moord gaf hij wel toe.",
+      },
+      {
+        type: "paragraph",
+        text: "“Ik schaam me daarvoor. Ik heb diegene laten stikken. Ik moest haar slepen. Doe bladeren op het slachtoffer, zei de duivel en: ga weg, ga weg! Ik moest ook de kleding en telefoon verstoppen. Ik hoorde: doe het voordat die duivel het bij jou doet.”",
+      },
+      {
+        type: "paragraph",
+        text: "De vrouw werd gewurgd of gesmoord, of misschien allebei wel. Elias deed het de rechters voor. “Dat ik mijn handen bij haar nek had.” Hij gebaarde ook hoe hij haar versleepte over het bospad. Een getuige zag iemand met bladeren in zijn handen staan.",
+      },
+      {
+        type: "paragraph",
+        text: "Die avond kwam een zoekactie op gang. Yvonne werd iets na middernacht dood gevonden.",
+      },
+      {
+        type: "paragraph",
+        text: "Woensdag in de rechtbank kwamen ook nabestaanden aan het woord. De weduwnaar deed zijn verhaal in tranen. “Deze man heeft mijn vrouw gedood en ik mis haar iedere dag. Hij heeft mijn leven geruïneerd.” Hij vertelde hoe schokkend het was om haar te moeten identificeren, zijn geliefde met wie hij meer dan veertig jaar samen was.",
+      },
+      {
+        type: "paragraph",
+        text: "Elias reageerde door opnieuw de moord toe te geven. “Mijn herinnering is dat ik haar met veel pijn en verdriet liet stikken.” Over de verkrachting blijft hij zwijgen.",
+      },
+      {
+        type: "paragraph",
+        text: "Donderdag komt de officier van justitie met een strafeis. De rechtbank heeft de uitspraak gepland op 26 januari.",
+      },
+      {
+        type: "paragraph",
+        text: "In oktober 2023 werd de GGZ op Vrederust opgeschrikt door twee heftige incidenten. Eerst de moord op Yvonne door een bewoner van De Mare en anderhalve week later was er een gewelddadige ontsnapping uit de Mare van een andere tbs'er Lennard C. Hij werd bij Hulten neergeschoten door de politie.",
+      },
+      {
+        type: "paragraph",
+        text: "Er kwamen diverse onderzoeken en daaruit bleek dat de GGZ niks te verwijten viel maar de GGZ besloot om een specifieke categorie tbs'ers niet meer op te nemen.",
+      },
+    ],
+    aiSummary: [
+      {
+        type: "paragraph",
+        text: "In oktober 2023 werd de 75-jarige Yvonne tijdens een wandeling in de bossen bij Halsteren vermoord door Elias M., een tbs’er die later bekende dat hij haar had gewurgd. In de rechtbank verklaarde hij dat hij handelde onder invloed van stemmen en een demon die hij ‘Iblis’ noemt. Hoewel hij de moord erkende, bleef hij vragen over de verkrachting ontwijken, ondanks dat zijn DNA werd aangetroffen op de kleding van het slachtoffer.",
+      },
+      {
+        type: "paragraph",
+        text: "Elias heeft een langdurige geschiedenis van psychoses, agressief gedrag en eerdere gewelds- en zedendelicten. Hij verbleef ten tijde van de moord op behandelcentrum Vrederust in Halsteren, waar hij volgens deskundigen juist stabieler was geworden en meer vrijheden had gekregen. Toch ging het op 10 oktober gruwelijk mis toen Yvonne hem in het bos tegenkwam, kort nadat zij afscheid had genomen van haar man.",
+      },
+      {
+        type: "paragraph",
+        text: "Tijdens de rechtszaak werd duidelijk hoe de verdachte sporen probeerde te verbergen en hoe een getuige hem met bladeren zag staan bij de plaats delict. Nabestaanden, waaronder de weduwnaar van Yvonne, vertelden in tranen over het verlies en de blijvende impact op hun leven. De rechtbank buigt zich nu over de straf; de eis volgt donderdag en de uitspraak staat gepland op 26 januari.",
+      },
+      {
+        type: "paragraph",
+        text: "De zaak kreeg extra lading doordat in dezelfde periode een tweede ernstig incident plaatsvond bij Vrederust, waarbij een andere tbs’er ontsnapte en later door de politie werd neergeschoten. Onderzoek wees uit dat de GGZ formeel niets te verwijten valt, maar de instelling besloot wel om een specifieke categorie tbs’ers niet langer op te nemen.",
+      },
+    ],
+    aiKeyPoints: [
+      "Verdachte bekent moord op Yvonne (75) bij Halsteren",
+      "Hij zegt dat stemmen en ‘Iblis’ hem aanstuurden",
+      "DNA van verdachte gevonden op kleding van slachtoffer",
+      "Nabestaanden spraken in de rechtbank over het verlies",
+      "Uitspraak gepland op 26 januari",
+    ],
+    regionName: "Halsteren",
+    theme: "Nieuws & maatschappij",
+    createdAt: "2025-12-30T00:15:00.000Z",
   },
 ];

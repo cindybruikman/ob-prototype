@@ -1,3 +1,5 @@
+import { ContentBlock } from "./mockDataBackend";
+
 export interface Article {
   id: string;
   title: string;
@@ -11,6 +13,7 @@ export interface Article {
   updatedAt: string;
   isNew?: boolean;
   isTrending?: boolean;
+  aiSummaryBlocks?: ContentBlock[];
 }
 
 export interface WeeklyRecapCategory {
