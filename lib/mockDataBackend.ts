@@ -595,4 +595,81 @@ export const backendMockArticles: BackendArticle[] = [
     theme: "Natuur & milieu",
     createdAt: "2026-01-05T09:00:00.000Z",
   },
+  {
+    _id: "ob-8",
+    author: "Leon Voskamp",
+    title: "Dit voetbalteam presteert het beste van heel Nederland",
+    teaser:
+      "DVS uit Aalst werd kampioen na een 6-0 zege op Waalre en is dit seizoen het best presterende eerste elftal van Nederland: 17 wedstrijden, 17 zeges en een enorme doelsaldo.",
+    imageUrl:
+      "https://api.omroepbrabant.nl/img/f/768/432/0.34/0.41/bWVkaWEvcHJvZC80Njc1MDgwLmpwZz9zdj0yMDE5LTA3LTA3JnN0PTIwMjAtMDEtMDFUMDAlM0EwMCUzQTAwWiZzZT0yMDQwLTAxLTAxVDAwJTNBMDAlM0EwMFomc3I9YiZzcD1yJnNpZz1yN3k3NEZ6ZGs2eEQwSTlRdWhJQnAlMkZoemRiNHgxeE9uUEl5M3I1NTBXakklM0Q=",
+
+    contentBlocks: [
+      {
+        type: "paragraph",
+        text: "DVS uit Aalst pakte zondagmiddag na een 6-0 overwinning op Waalre de titel in de vijfde klasse F. De ploeg van trainer Mike de Louw (40) is daarmee dit seizoen het best presterende eerste elftal van Nederland. Het team is namelijk zonder puntverlies en hoopt die reeks de rest van het seizoen vol te houden. “We willen geschiedenis schrijven”, zegt de trainer.",
+      },
+      {
+        type: "paragraph",
+        text: "17 wedstrijden gespeeld, 51 punten. DVS staat ongeslagen bovenaan en scoorde al 105 keer met maar 19 tegengoals. “Het is een topseizoen. We spelen goed, winnen alles en scoren heel veel. Met ook nog eens mooie doelpunten”, zegt de trainer.",
+      },
+      {
+        type: "paragraph",
+        text: "“We hebben gewoon een hele goede groep met bijna allemaal echte DVS-jongens. Een aantal jonge gasten, maar ook wat oudere spelers die vroeger bij DVS speelden en zijn teruggekomen. Als ik iemand moet wisselen, dan gaat niet het team slechter spelen. Jongens die hier op de bank zitten, zouden bij een competitiegenoot in de basis staan. En nee, er is geen enkele speler die we betalen.”",
+      },
+      {
+        type: "paragraph",
+        text: "Door Vriendschap Saamgebracht (DVS) is meerdere maatjes te groot voor de concurrentie en won bijvoorbeeld al met 13-0. “Ik moet wel zeggen dat er twee vijfde klassen zijn in deze regio en deze wat zwakker is dan de andere. Er zitten in onze competitie teams die blij zijn dat ze een elftal op de been krijgen. Wij willen tegen iedere tegenstander zoveel mogelijk scoren en spelen heel aanvallend. Daardoor krijgen we ook weleens onnodige goals tegen.”",
+      },
+      {
+        type: "paragraph",
+        text: "Er wachten nog drie wedstrijden die voor de stand niet meer belangrijk zijn. Mike wil van verslappen echter niets weten. “We gaan voor zestig punten in twintig wedstrijden en we willen zoveel mogelijk scoren. Je kunt geschiedenis schrijven, dat leeft in onze groep.”",
+      },
+      {
+        type: "paragraph",
+        text: "Dit kampioenschap is een hoogtepunt in de trainerscarrière van Mike. De club waar hij zelf voetbalde en op 15-jarige leeftijd als jeugdtrainer startte. Na wat uitstapjes bij andere clubs keerde Mike vier jaar geleden terug op het oude nest.",
+      },
+      {
+        type: "paragraph",
+        text: "“De trainer van het tweede elftal stopte en de jongens wilden dat ik het over zou nemen. Er was wel een afspraak met het bestuur dat ze als eerste met mij gingen praten als de hoofdtrainer zou stoppen. Drie jaar geleden heb ik het overgenomen.”",
+      },
+      {
+        type: "paragraph",
+        text: "“Vorig seizoen werden we tweede met een ruime achterstand op de kampioen. Onze doelstelling dit seizoen was de titel. Dat we nu al kampioen zijn met de club waar mijn roots liggen, maakt het extra mooi.”",
+      },
+      {
+        type: "paragraph",
+        text: "En dus wacht volgend seizoen de vierde klasse. “Dat durf ik zeker aan met deze selectie. We hebben oefenwedstrijden gespeeld tegen derdeklassers die we maar nipt verloren. Afhankelijk van in welke klasse we worden ingedeeld, kunnen we misschien wel meedoen om de bovenste plaatsen of een periode. We hoeven niet bang te zijn om direct weer te degraderen.”",
+      },
+    ],
+
+    aiSummary: [
+      {
+        type: "paragraph",
+        text: "DVS uit Aalst is kampioen geworden in de vijfde klasse F na een overtuigende 6-0 zege op Waalre. Met die titel is de ploeg van trainer Mike de Louw ook het best presterende eerste elftal van Nederland dit seizoen: na 17 wedstrijden heeft DVS nog geen punt laten liggen en wil het die perfecte reeks tot het einde vasthouden.",
+      },
+      {
+        type: "paragraph",
+        text: "De cijfers zijn uitzonderlijk: 51 punten uit 17 duels, 105 doelpunten voor en slechts 19 tegen. De Louw schrijft het succes toe aan een brede selectie met veel ‘echte DVS-jongens’, aangevuld met teruggekeerde spelers. Volgens hem is de kwaliteit zo gelijkmatig dat wissels het niveau niet verlagen, en hij benadrukt dat er geen spelers betaald worden.",
+      },
+      {
+        type: "paragraph",
+        text: "Hoewel de trainer erkent dat de competitie relatief zwak is, kiest DVS bewust voor een zeer aanvallende speelstijl om zoveel mogelijk te scoren, wat soms ook onnodige tegengoals oplevert. Met nog drie wedstrijden te gaan wil De Louw niet verslappen: het doel is zestig punten uit twintig wedstrijden en een historisch doelsaldo.",
+      },
+      {
+        type: "paragraph",
+        text: "Voor De Louw is het kampioenschap een hoogtepunt, mede omdat hij bij DVS is opgegroeid en er al jong als jeugdtrainer begon. Volgend seizoen speelt de club in de vierde klasse. De trainer denkt dat zijn selectie dat niveau aankan en zelfs kan meedoen om een periode, en hij verwacht niet dat DVS meteen weer hoeft te vrezen voor degradatie.",
+      },
+    ],
+    aiKeyPoints: [
+      "DVS uit Aalst pakt titel na 6-0 op Waalre",
+      "Team wint 17 van 17 en heeft 51 punten",
+      "Doelsaldo: 105 voor en 19 tegen",
+      "Trainer: niemand wordt betaald, selectie is breed",
+      "Doel: zestig punten en recordseizoen afmaken",
+    ],
+    regionName: "Aalst",
+    theme: "Sport",
+    createdAt: "2025-04-13T16:45:00.000Z",
+  },
 ];
