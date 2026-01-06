@@ -9,10 +9,19 @@ const withSerwist = withSerwistInit({
   additionalPrecacheEntries: [{ url: "/~offline", revision }],
   swSrc: "app/sw.ts",
   swDest: "public/sw.js",
-  // Belangrijk: Serwist werkt met webpack-build. In dev wil je 'm vaak uit.
   disable: process.env.NODE_ENV !== "production",
 });
 
 export default withSerwist({
-  // jouw Next config hier
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.omroepbrabant.nl",
+        pathname: "/**",
+      },
+    ],
+    // optioneel, maar handig:
+    formats: ["image/avif", "image/webp"],
+  },
 });

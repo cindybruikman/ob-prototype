@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge"; // alleen als je badges nog gebruikt
 import type { UIArticle } from "@/lib/mapBackendToUI";
+import Image from "next/image";
 
 type Variant = "hero" | "compact" | "default";
 
@@ -38,9 +39,10 @@ export function NewsCard({
               <div className="relative aspect-[808/424] bg-secondary">
                 {hasImg ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={article.imageUrl}
                     alt={article.title}
+                    fetchPriority="high"
                     loading="eager"
                     decoding="async"
                     className="absolute inset-0 w-full h-full object-cover"
@@ -74,7 +76,7 @@ export function NewsCard({
               <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary shrink-0">
                 {hasImg ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={article.imageUrl}
                     alt={article.title}
                     className="w-full h-full object-cover"
@@ -115,7 +117,7 @@ export function NewsCard({
           {showImage && hasImg && (
             <div className="aspect-video bg-secondary">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={article.imageUrl}
                 alt={article.title}
                 className="w-full h-full object-cover"
