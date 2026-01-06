@@ -104,6 +104,7 @@ export function LocationSelector({ onContinue }: Props) {
 
   // Search list (voor regio)
   const [search, setSearch] = useState("");
+  const [showRegionList, setShowRegionList] = useState(false);
 
   const filteredAvailable = useMemo(() => {
     const already = new Set(
@@ -439,32 +440,42 @@ export function LocationSelector({ onContinue }: Props) {
             <div className="space-y-2">
               <input
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setShowRegionList(true);
+                }}
                 placeholder="Zoek regio…"
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/30"
               />
 
-              <div className="bg-background border border-border rounded-lg p-2 max-h-56 overflow-y-auto">
-                {filteredAvailable.slice(0, 40).map((loc) => (
-                  <button
-                    key={loc}
-                    type="button"
-                    onClick={() => setDraftName(loc)}
-                    className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${
-                      draftName === loc ? "bg-secondary" : "hover:bg-secondary"
-                    }`}
-                  >
-                    {loc}
-                  </button>
-                ))}
+              {showRegionList && (
+                <div className="bg-background border border-border rounded-lg p-2 max-h-56 overflow-y-auto">
+                  {filteredAvailable.slice(0, 40).map((loc) => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={() => {
+                        setDraftName(loc);
+                        setSearch(loc);
+                        setShowRegionList(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${
+                        draftName === loc
+                          ? "bg-secondary"
+                          : "hover:bg-secondary"
+                      }`}
+                    >
+                      {loc}
+                    </button>
+                  ))}
 
-                {filteredAvailable.length === 0 ? (
-                  <div className="text-sm text-muted-foreground px-3 py-2">
-                    Geen resultaten.
-                  </div>
-                ) : null}
-              </div>
-
+                  {filteredAvailable.length === 0 ? (
+                    <div className="text-sm text-muted-foreground px-3 py-2">
+                      Geen resultaten.
+                    </div>
+                  ) : null}
+                </div>
+              )}
               {draftName ? (
                 <div className="text-xs text-muted-foreground">
                   Geselecteerd:{" "}
