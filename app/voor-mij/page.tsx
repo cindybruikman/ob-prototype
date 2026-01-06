@@ -114,7 +114,7 @@ export default function VoorMijPage() {
 
           <div className="relative flex items-center">
             {/* Rode flap */}
-            <div
+            {/* <div
               aria-hidden
               className="
                 absolute
@@ -127,7 +127,7 @@ export default function VoorMijPage() {
                 rotate-[-20deg]
                 z-0
               "
-            />
+            /> */}
 
             {/* Search icon */}
             <button
