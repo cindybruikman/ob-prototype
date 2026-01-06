@@ -46,15 +46,15 @@ export default function WeeklyPage() {
   }, [articles, preferences]);
 
   const recapSections = useMemo(() => {
-    const grouped = new Map<string, typeof filteredArticles>();
+    const grouped: Record<string, typeof filteredArticles> = {};
 
     for (const a of filteredArticles) {
       const key = a.category || "Overig";
-      if (!grouped.has(key)) grouped.set(key, []);
-      grouped.get(key)!.push(a);
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(a);
     }
 
-    return Array.from(grouped.entries()).map(([category, arts]) => ({
+    return Object.entries(grouped).map(([category, arts]) => ({
       category,
       icon: category.toLowerCase().includes("sport")
         ? ("sport" as const)
@@ -64,7 +64,7 @@ export default function WeeklyPage() {
         : ("news" as const),
       articles: arts.slice(0, 4).map((a) => ({
         id: a.id,
-        region: a.location,
+        region: a.location, // Eindhoven
         title: a.title,
         subtitle: a.summary,
         isNew: a.isNew,
@@ -73,30 +73,35 @@ export default function WeeklyPage() {
     }));
   }, [filteredArticles]);
 
-  // labels: current + regions
-  const currentLocation = useMemo(() => {
-    if (!preferences) return null;
-    return (preferences.savedLocations ?? []).find((l) => l.id === "current");
-  }, [preferences]);
+  useEffect(() => {
+    console.log("filteredArticles length:", filteredArticles.length);
+    console.log("recapSections:", recapSections);
+    console.log(
+      "first section articles length:",
+      recapSections?.[0]?.articles?.length
+    );
+  }, [filteredArticles, recapSections]);
 
-  const regionLocations = useMemo(() => {
+  // labels: current + regions
+  // ✅ actieve locaties = regions + current (alleen als live aan staat)
+  const activeLocations = useMemo(() => {
     if (!preferences) return [];
-    return (preferences.savedLocations ?? []).filter(
-      (l) => l.source === "region"
+    const saved = preferences.savedLocations ?? [];
+    return saved.filter(
+      (l) =>
+        l.source === "region" ||
+        (l.source === "current" && preferences.useCurrentLocation)
     );
   }, [preferences]);
 
-  const locationLabel = preferences?.useCurrentLocation
-    ? currentLocation?.name ?? "Huidige locatie"
-    : regionLocations.length > 0
-    ? regionLocations.map((l) => l.name).join(", ")
-    : "Alle locaties";
+  const locationLabel =
+    activeLocations.length > 0
+      ? activeLocations.map((l) => l.name).join(", ")
+      : "Alle locaties";
 
-  const radiusLabel = preferences?.useCurrentLocation
-    ? `${currentLocation?.radius ?? 15} km`
-    : regionLocations.length === 1
-    ? `${regionLocations[0].radius} km`
-    : "";
+  // radius: alleen tonen als er exact 1 actieve locatie is
+  const radiusLabel =
+    activeLocations.length === 1 ? `${activeLocations[0].radius} km` : "";
 
   if (!preferences) {
     return (

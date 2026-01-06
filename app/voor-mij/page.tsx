@@ -11,7 +11,11 @@ import { BottomNav } from "@/components/layout/BottomNav";
 
 import { backendMockArticles } from "@/lib/mockDataBackend";
 import { mapBackendToUI } from "@/lib/mapBackendToUI";
-import { getPreferences, type UserPreferences } from "@/lib/preferences";
+import {
+  getPreferences,
+  filterArticlesByPreferences,
+  type UserPreferences,
+} from "@/lib/preferences";
 
 function normalize(s: string) {
   return s
@@ -52,60 +56,29 @@ export default function VoorMijPage() {
   // 3) filter op savedLocations (live of region)
   const filteredArticles = useMemo(() => {
     if (!preferences) return [];
-
-    // ✅ Live locatie aan → filter op current plaatsnaam
-    if (preferences.useCurrentLocation) {
-      const current = (preferences.savedLocations ?? []).find(
-        (l) => l.id === "current"
-      );
-
-      const currentName = current?.name?.trim(); // bv "Tilburg"
-      if (!currentName) return articles;
-
-      const target = normalize(currentName);
-      return articles.filter((a) => normalize(a.location).includes(target));
-    }
-
-    // ✅ Anders: filter op gekozen regio's
-    const selectedNames = (preferences.savedLocations ?? [])
-      .filter((l) => l.source === "region")
-      .map((l) => l.name);
-
-    // niets gekozen => alles tonen (prototype)
-    if (selectedNames.length === 0) return articles;
-
-    const selectedNorm = selectedNames.map(normalize);
-
-    return articles.filter((a) => {
-      const loc = normalize(a.location);
-      return selectedNorm.some((name) => loc.includes(name));
-    });
+    return filterArticlesByPreferences(articles, preferences);
   }, [articles, preferences]);
 
   // 4) header labels
-  const currentLocation = useMemo(() => {
-    if (!preferences) return null;
-    return (preferences.savedLocations ?? []).find((l) => l.id === "current");
-  }, [preferences]);
-
-  const regionLocations = useMemo(() => {
+  // ✅ actieve locaties = regions + current (alleen als live aan staat)
+  const activeLocations = useMemo(() => {
     if (!preferences) return [];
-    return (preferences.savedLocations ?? []).filter(
-      (l) => l.source === "region"
+    const saved = preferences.savedLocations ?? [];
+    return saved.filter(
+      (l) =>
+        l.source === "region" ||
+        (l.source === "current" && preferences.useCurrentLocation)
     );
   }, [preferences]);
 
-  const locationLabel = preferences?.useCurrentLocation
-    ? currentLocation?.name ?? "Huidige locatie"
-    : regionLocations.length > 0
-    ? regionLocations.map((l) => l.name).join(", ")
-    : "Alle locaties";
+  const locationLabel =
+    activeLocations.length > 0
+      ? activeLocations.map((l) => l.name).join(", ")
+      : "Alle locaties";
 
-  const radiusLabel = preferences?.useCurrentLocation
-    ? `${currentLocation?.radius ?? 15} km`
-    : regionLocations.length === 1
-    ? `${regionLocations[0].radius} km`
-    : "";
+  // radius: alleen tonen als er exact 1 actieve locatie is
+  const radiusLabel =
+    activeLocations.length === 1 ? `${activeLocations[0].radius} km` : "";
 
   if (!preferences) {
     return (

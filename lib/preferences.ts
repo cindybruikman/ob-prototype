@@ -125,32 +125,22 @@ export function filterArticlesByPreferences<T extends { location: string }>(
   articles: T[],
   prefs: UserPreferences
 ): T[] {
-  // ✅ Live locatie aan → filter op current plaatsnaam
-  if (prefs.useCurrentLocation) {
-    const current = (prefs.savedLocations ?? []).find(
-      (l) => l.id === "current"
-    );
-    const currentName = current?.name?.trim();
-    if (!currentName) return articles;
+  const saved = prefs.savedLocations ?? [];
 
-    const target = normalize(currentName);
+  // ✅ active = alle regio's + current (alleen als live aan staat)
+  const active = saved.filter(
+    (l) =>
+      l.source === "region" ||
+      (l.source === "current" && prefs.useCurrentLocation)
+  );
 
-    return articles.filter((article) =>
-      normalize(article.location).includes(target)
-    );
-  }
+  // niets gekozen => alles tonen (prototype)
+  if (active.length === 0) return articles;
 
-  // ✅ Anders: filter op gekozen regio's
-  const picked = (prefs.savedLocations ?? [])
-    .filter((l) => l.source === "region")
-    .map((l) => l.name);
-
-  if (picked.length === 0) return articles;
-
-  const pickedNorm = picked.map(normalize);
+  const needles = active.map((l) => normalize(l.name));
 
   return articles.filter((article) => {
-    const loc = normalize(article.location);
-    return pickedNorm.some((p) => loc.includes(p));
+    const hay = normalize(article.location);
+    return needles.some((n) => hay.includes(n));
   });
 }
