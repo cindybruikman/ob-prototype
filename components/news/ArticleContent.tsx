@@ -139,16 +139,9 @@ export function ArticleContent({ article }: ArticleContentProps) {
       </div>
 
       {isAiView ? (
-        <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
-          🤖 Deze weergave is automatisch gegenereerd met AI en kan onjuistheden
-          bevatten. Controleer bij twijfel het originele artikel.
-        </div>
-      ) : null}
-
-      {isAiView ? (
         <details className="rounded-lg border border-border bg-card px-3 py-2">
           <summary className="cursor-pointer text-xs text-muted-foreground">
-            🤖 AI-bewerkt — wat betekent dit?
+            AI-bewerkt — wat betekent dit?
           </summary>
           <p className="mt-2 text-xs text-muted-foreground">
             Samenvatting/kernpunten zijn automatisch gegenereerd en kunnen
