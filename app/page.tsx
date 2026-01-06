@@ -70,9 +70,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <div className="px-4 pt-3">
-        <TestApiButton />
-      </div>
+      <div className="px-4 pt-3">{/* <TestApiButton /> */}</div>
 
       {/* Hero */}
       <div className="pt-2">
