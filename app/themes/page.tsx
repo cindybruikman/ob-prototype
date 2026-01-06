@@ -39,6 +39,18 @@ export default function ThemesPage() {
     savePreferences(next);
   };
 
+  const setSelectedThemes = (themes: ThemeKey[]) => {
+    if (!prefs) return;
+
+    const next: UserPreferences = {
+      ...prefs,
+      selectedThemes: themes,
+    };
+
+    setPrefs(next);
+    savePreferences(next);
+  };
+
   const handleContinue = () => {
     router.push("/voor-mij");
   };
@@ -54,7 +66,11 @@ export default function ThemesPage() {
       />
 
       <main className="mx-auto w-full max-w-[808px] px-4 py-4 space-y-3">
-        <ThemeSelector selected={prefs.selectedThemes} onToggle={toggleTheme} />
+        <ThemeSelector
+          selected={prefs.selectedThemes}
+          onToggle={toggleTheme}
+          onSetSelected={setSelectedThemes}
+        />
       </main>
 
       <StickyFooterCTA
