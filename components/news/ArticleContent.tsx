@@ -17,6 +17,8 @@ type ViewMode = "keypoints" | "summary" | "full";
 export function ArticleContent({ article }: ArticleContentProps) {
   const [viewMode, setViewMode] = useState<ViewMode>("full");
 
+  const isAiView = viewMode === "summary" || viewMode === "keypoints";
+
   return (
     <div className="mx-auto w-full max-w-[808px] px-4 space-y-6">
       {/* Hero Image */}
@@ -135,6 +137,25 @@ export function ArticleContent({ article }: ArticleContentProps) {
           </Button>
         </div> */}
       </div>
+
+      {isAiView ? (
+        <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
+          🤖 Deze weergave is automatisch gegenereerd met AI en kan onjuistheden
+          bevatten. Controleer bij twijfel het originele artikel.
+        </div>
+      ) : null}
+
+      {isAiView ? (
+        <details className="rounded-lg border border-border bg-card px-3 py-2">
+          <summary className="cursor-pointer text-xs text-muted-foreground">
+            🤖 AI-bewerkt — wat betekent dit?
+          </summary>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Samenvatting/kernpunten zijn automatisch gegenereerd en kunnen
+            fouten bevatten. Controleer bij twijfel het originele artikel.
+          </p>
+        </details>
+      ) : null}
 
       {/* Content Based on View Mode */}
       <div className="space-y-4">
