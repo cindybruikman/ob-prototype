@@ -167,22 +167,21 @@ export function LocationSelector({ onContinue }: Props) {
   };
 
   // --- Live toggle: alleen voor current GPS ophalen ---
-  const handleToggleLive = () => {
-    const next = !preferences.useCurrentLocation;
-
-    if (!next) {
+  const handleToggleLive = (checked: boolean) => {
+    if (!checked) {
       setPreferences((prev) => ({
         ...prev,
         useCurrentLocation: false,
         currentCoords: undefined,
       }));
+
       toast("Live locatie uit", {
         description: "We gebruiken je GPS niet meer.",
       });
       return;
     }
 
-    // Zet UI flag aan
+    // AAN: zet flag aan voor UI
     setPreferences((prev) => ({ ...prev, useCurrentLocation: true }));
 
     if (!navigator.geolocation) {
@@ -201,6 +200,7 @@ export function LocationSelector({ onContinue }: Props) {
       async (pos) => {
         const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
+        // coords opslaan
         setPreferences((prev) => ({
           ...prev,
           currentCoords: coords,
@@ -251,9 +251,10 @@ export function LocationSelector({ onContinue }: Props) {
             };
           });
 
-          // Zet current als “draft” default als user daarna wil opslaan
+          // Handig voor je “locatie instellen” flow
           setDraftKind("current");
           setDraftName(matched);
+
           toast("Live locatie actief", {
             description: `Huidige plaats: ${matched}`,
           });
@@ -263,17 +264,26 @@ export function LocationSelector({ onContinue }: Props) {
           });
         }
       },
-      () => {
+      (err) => {
+        // ✅ log echte reden (super handig)
+        console.log("Geolocation error:", err.code, err.message);
+
         toast("Locatie geweigerd", {
-          description: "Geef toestemming om je huidige locatie te gebruiken.",
+          description:
+            err.code === 1
+              ? "Toegang geweigerd in browserinstellingen."
+              : err.code === 2
+              ? "Locatie niet beschikbaar (GPS/OS)."
+              : "Timeout bij locatie ophalen.",
         });
+
         setPreferences((prev) => ({
           ...prev,
           useCurrentLocation: false,
           currentCoords: undefined,
         }));
       },
-      { enableHighAccuracy: true, timeout: 8000 }
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
   };
 
