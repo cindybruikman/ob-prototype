@@ -41,6 +41,8 @@ export function NewsCard({
                   <img
                     src={article.imageUrl}
                     alt={article.title}
+                    loading="eager"
+                    decoding="async"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 ) : null}
