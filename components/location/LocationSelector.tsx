@@ -76,20 +76,26 @@ type DraftKind = "region" | "current";
 
 /**
  * Nieuwe UX:
- * - Je stelt 1 locatie in (type + naam + radius + label) en slaat op
- * - Knop "+ Nog een locatie" opent opnieuw het formulier
- * - Per saved location kun je radius + label nog aanpassen
+ * - + Nog een locatie → formulier
+ * - Opslaan → komt in savedLocations
+ * - Per saved location: label + radius aanpasbaar
  */
 export function LocationSelector({ onContinue }: Props) {
-  const [preferences, setPreferences] = useState<UserPreferences>(() =>
-    getPreferences()
-  );
+  const DEFAULT_LABEL: LocationLabel = "Woonplaats";
+
+  // ✅ Hydration-fix: render pas na mount + prefs loaded
+  const [mounted, setMounted] = useState(false);
+  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
 
   useEffect(() => {
+    setMounted(true);
+    setPreferences(getPreferences());
+  }, []);
+
+  useEffect(() => {
+    if (!preferences) return;
     savePreferences(preferences);
   }, [preferences]);
-
-  const DEFAULT_LABEL: LocationLabel = "Woonplaats";
 
   // --- Draft state (1 locatie instellen) ---
   const [isAdding, setIsAdding] = useState(false);
@@ -106,9 +112,16 @@ export function LocationSelector({ onContinue }: Props) {
   const [search, setSearch] = useState("");
   const [showRegionList, setShowRegionList] = useState(false);
 
+  // ✅ early return voorkomt alle null errors + hydration mismatch
+
+  const currentSaved = useMemo(
+    () => (preferences?.savedLocations ?? []).find((l) => l.id === "current"),
+    [preferences?.savedLocations]
+  );
+
   const filteredAvailable = useMemo(() => {
     const already = new Set(
-      (preferences.savedLocations ?? [])
+      (preferences?.savedLocations ?? [])
         .filter((l) => l.source === "region")
         .map((l) => normalize(l.name))
     );
@@ -118,35 +131,46 @@ export function LocationSelector({ onContinue }: Props) {
     return availableLocations
       .filter((loc) => !already.has(normalize(loc)))
       .filter((loc) => (q ? normalize(loc).includes(q) : true));
-  }, [preferences.savedLocations, search]);
-
+  }, [preferences?.savedLocations, search]);
   // --- Helpers to update existing saved locations ---
   const updateLocationRadius = (id: string, radius: number) => {
-    setPreferences((prev) => ({
-      ...prev,
-      savedLocations: (prev.savedLocations ?? []).map((l) =>
-        l.id === id ? { ...l, radius } : l
-      ),
-    }));
+    setPreferences((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        savedLocations: (prev.savedLocations ?? []).map((l) =>
+          l.id === id ? { ...l, radius } : l
+        ),
+      };
+    });
   };
 
   const updateLocationLabel = (id: string, label: LocationLabel) => {
-    setPreferences((prev) => ({
-      ...prev,
-      savedLocations: (prev.savedLocations ?? []).map((l) =>
-        l.id === id ? { ...l, label } : l
-      ),
-    }));
+    setPreferences((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        savedLocations: (prev.savedLocations ?? []).map((l) =>
+          l.id === id ? { ...l, label } : l
+        ),
+      };
+    });
   };
 
   const removeLocation = (id: string) => {
-    setPreferences((prev) => ({
-      ...prev,
-      savedLocations: (prev.savedLocations ?? []).filter((l) => l.id !== id),
-      // als je current verwijdert → ook toggle uit
-      useCurrentLocation: id === "current" ? false : prev.useCurrentLocation,
-      currentCoords: id === "current" ? undefined : prev.currentCoords,
-    }));
+    setPreferences((prev) => {
+      if (!prev) return prev;
+
+      const nextSaved = (prev.savedLocations ?? []).filter((l) => l.id !== id);
+
+      return {
+        ...prev,
+        savedLocations: nextSaved,
+        // als je current verwijdert → ook toggle uit + coords weg
+        useCurrentLocation: id === "current" ? false : prev.useCurrentLocation,
+        currentCoords: id === "current" ? undefined : prev.currentCoords,
+      };
+    });
   };
 
   const resetDraft = () => {
@@ -155,6 +179,7 @@ export function LocationSelector({ onContinue }: Props) {
     setDraftRadius(15);
     setDraftLabel(DEFAULT_LABEL);
     setSearch("");
+    setShowRegionList(false);
   };
 
   const startAdd = () => {
@@ -167,14 +192,17 @@ export function LocationSelector({ onContinue }: Props) {
     resetDraft();
   };
 
-  // --- Live toggle: alleen voor current GPS ophalen ---
+  // --- Live toggle: current GPS ophalen ---
   const handleToggleLive = (checked: boolean) => {
     if (!checked) {
-      setPreferences((prev) => ({
-        ...prev,
-        useCurrentLocation: false,
-        currentCoords: undefined,
-      }));
+      setPreferences((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          useCurrentLocation: false,
+          currentCoords: undefined,
+        };
+      });
 
       toast("Live locatie uit", {
         description: "We gebruiken je GPS niet meer.",
@@ -183,17 +211,19 @@ export function LocationSelector({ onContinue }: Props) {
     }
 
     // AAN: zet flag aan voor UI
-    setPreferences((prev) => ({ ...prev, useCurrentLocation: true }));
+    setPreferences((prev) => {
+      if (!prev) return prev;
+      return { ...prev, useCurrentLocation: true };
+    });
 
     if (!navigator.geolocation) {
       toast("Locatie niet beschikbaar", {
         description: "Je browser ondersteunt geen GPS.",
       });
-      setPreferences((prev) => ({
-        ...prev,
-        useCurrentLocation: false,
-        currentCoords: undefined,
-      }));
+      setPreferences((prev) => {
+        if (!prev) return prev;
+        return { ...prev, useCurrentLocation: false, currentCoords: undefined };
+      });
       return;
     }
 
@@ -201,12 +231,10 @@ export function LocationSelector({ onContinue }: Props) {
       async (pos) => {
         const coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
-        // coords opslaan
-        setPreferences((prev) => ({
-          ...prev,
-          currentCoords: coords,
-          useCurrentLocation: true,
-        }));
+        setPreferences((prev) => {
+          if (!prev) return prev;
+          return { ...prev, currentCoords: coords, useCurrentLocation: true };
+        });
 
         try {
           const place = await reverseGeocodeToPlaceName(coords);
@@ -226,7 +254,9 @@ export function LocationSelector({ onContinue }: Props) {
           setDetectedCurrentName(matched);
 
           setPreferences((prev) => {
-            const existing = prev.savedLocations.find(
+            if (!prev) return prev;
+
+            const existing = (prev.savedLocations ?? []).find(
               (l) => l.id === "current"
             );
 
@@ -266,10 +296,9 @@ export function LocationSelector({ onContinue }: Props) {
         }
       },
       (err) => {
-        // ✅ log echte reden (super handig)
         console.log("Geolocation error:", err.code, err.message);
 
-        toast("Locatie geweigerd", {
+        toast("Locatie probleem", {
           description:
             err.code === 1
               ? "Toegang geweigerd in browserinstellingen."
@@ -278,11 +307,14 @@ export function LocationSelector({ onContinue }: Props) {
               : "Timeout bij locatie ophalen.",
         });
 
-        setPreferences((prev) => ({
-          ...prev,
-          useCurrentLocation: false,
-          currentCoords: undefined,
-        }));
+        setPreferences((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            useCurrentLocation: false,
+            currentCoords: undefined,
+          };
+        });
       },
       { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
@@ -292,12 +324,11 @@ export function LocationSelector({ onContinue }: Props) {
   const saveDraftLocation = () => {
     const name = draftName.trim();
     if (!name) {
-      toast("Kies een locatie", {
-        description: "Selecteer of typ een plaatsnaam.",
-      });
+      toast("Kies een locatie", { description: "Selecteer een plaatsnaam." });
       return;
     }
 
+    // current
     if (draftKind === "current") {
       const nextCurrent: SavedLocation = {
         id: "current",
@@ -308,6 +339,8 @@ export function LocationSelector({ onContinue }: Props) {
       };
 
       setPreferences((prev) => {
+        if (!prev) return prev;
+
         const exists = (prev.savedLocations ?? []).some(
           (l) => l.id === "current"
         );
@@ -327,7 +360,7 @@ export function LocationSelector({ onContinue }: Props) {
 
     // region
     const id = normalize(name).replace(/\s+/g, "-");
-    const exists = (preferences.savedLocations ?? []).some(
+    const exists = (preferences?.savedLocations ?? []).some(
       (l) => l.source === "region" && l.id === id
     );
     if (exists) {
@@ -344,20 +377,17 @@ export function LocationSelector({ onContinue }: Props) {
       source: "region",
     };
 
-    setPreferences((prev) => ({
-      ...prev,
-      savedLocations: [...(prev.savedLocations ?? []), regionLoc],
-    }));
+    setPreferences((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        savedLocations: [...(prev.savedLocations ?? []), regionLoc],
+      };
+    });
 
     toast("Locatie opgeslagen", { description: name });
     setIsAdding(false);
   };
-
-  // --- UI: current info for display ---
-  const currentSaved = useMemo(
-    () => (preferences.savedLocations ?? []).find((l) => l.id === "current"),
-    [preferences.savedLocations]
-  );
 
   return (
     <div className="space-y-6">
@@ -372,7 +402,7 @@ export function LocationSelector({ onContinue }: Props) {
           </div>
 
           <Switch
-            checked={preferences.useCurrentLocation}
+            checked={preferences?.useCurrentLocation}
             onCheckedChange={handleToggleLive}
           />
         </div>
@@ -381,7 +411,7 @@ export function LocationSelector({ onContinue }: Props) {
           Als dit aan staat, kun je je huidige plaats als locatie opslaan.
         </p>
 
-        {preferences.useCurrentLocation && currentSaved?.name ? (
+        {preferences?.useCurrentLocation && currentSaved?.name ? (
           <p className="text-xs text-muted-foreground mt-2">
             Huidige plaats:{" "}
             <span className="text-foreground">{currentSaved.name}</span>
@@ -429,7 +459,7 @@ export function LocationSelector({ onContinue }: Props) {
               variant={draftKind === "current" ? "pillActive" : "pill"}
               size="pill"
               onClick={() => setDraftKind("current")}
-              disabled={!preferences.useCurrentLocation}
+              disabled={!preferences?.useCurrentLocation}
             >
               Huidige locatie
             </Button>
@@ -457,7 +487,7 @@ export function LocationSelector({ onContinue }: Props) {
                       onClick={() => {
                         setDraftName(loc);
                         setSearch(loc);
-                        setShowRegionList(false);
+                        setShowRegionList(false); // ✅ dropdown weg
                       }}
                       className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors ${
                         draftName === loc
@@ -476,6 +506,7 @@ export function LocationSelector({ onContinue }: Props) {
                   ) : null}
                 </div>
               )}
+
               {draftName ? (
                 <div className="text-xs text-muted-foreground">
                   Geselecteerd:{" "}
@@ -540,13 +571,13 @@ export function LocationSelector({ onContinue }: Props) {
         </label>
 
         <div className="space-y-3">
-          {(preferences.savedLocations ?? []).length === 0 ? (
+          {(preferences?.savedLocations ?? []).length === 0 ? (
             <div className="text-sm text-muted-foreground">
               Nog geen locaties opgeslagen.
             </div>
           ) : null}
 
-          {(preferences.savedLocations ?? []).map((loc) => (
+          {(preferences?.savedLocations ?? []).map((loc) => (
             <div
               key={loc.id}
               className="bg-card border border-border rounded-lg p-3 space-y-2"
@@ -594,7 +625,7 @@ export function LocationSelector({ onContinue }: Props) {
                 </select>
               </div>
 
-              {/* Radius edit (per location!) */}
+              {/* Radius edit (per location) */}
               <div className="flex gap-2 flex-wrap">
                 {radiusOptions.map((r) => (
                   <Button
