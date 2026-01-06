@@ -63,7 +63,26 @@ export function getPreferences(): UserPreferences {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as Partial<UserPreferences>;
-      return { ...defaultPreferences, ...parsed };
+
+      // ✅ sanitize savedLocations: label altijd aanwezig
+      const sanitizedSavedLocations: SavedLocation[] = (
+        parsed.savedLocations ?? []
+      ).map((l: any) => ({
+        id: String(l.id),
+        name: String(l.name),
+        radius: Number(l.radius ?? 15),
+        source: l.source === "current" ? "current" : "region",
+        label:
+          l.label === "Woonplaats" || l.label === "Werk" || l.label === "Anders"
+            ? l.label
+            : "Anders",
+      }));
+
+      return {
+        ...defaultPreferences,
+        ...parsed,
+        savedLocations: sanitizedSavedLocations,
+      };
     }
   } catch (e) {
     console.error("Error reading preferences:", e);
