@@ -24,7 +24,6 @@ export function NewsCard({
   showSummary = true,
   showDate = true,
 }: NewsCardProps) {
-  // helper: image fallback
   const hasImg = Boolean(article.imageUrl);
   const containerClass = "mx-auto w-full max-w-[808px] px-4";
 
@@ -35,17 +34,15 @@ export function NewsCard({
         <div className={containerClass}>
           <article className="bg-card rounded-xl overflow-hidden border border-border">
             {showImage && (
-              // OB ratio: 808x424 (≈1.905)
               <div className="relative aspect-[808/424] bg-secondary">
                 {hasImg ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <Image
                     src={article.imageUrl}
                     alt={article.title}
-                    fetchPriority="high"
-                    loading="eager"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 808px) 100vw, 808px"
+                    className="object-cover"
+                    priority
                   />
                 ) : null}
 
@@ -66,20 +63,21 @@ export function NewsCard({
     );
   }
 
-  // ✅ COMPACT: kleine thumbnail links + alleen titel (zoals jouw screenshot)
+  // ✅ COMPACT: kleine thumbnail links + titel (+ optioneel summary/meta)
   if (variant === "compact") {
     return (
       <Link href={`/article/${article.id}`} className="block">
         <div className={containerClass}>
           <article className="flex gap-3 rounded-xl p-3">
             {showImage && (
-              <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary shrink-0">
+              <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-secondary shrink-0">
                 {hasImg ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <Image
                     src={article.imageUrl}
                     alt={article.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="80px"
+                    className="object-cover"
                   />
                 ) : null}
               </div>
@@ -109,23 +107,24 @@ export function NewsCard({
     );
   }
 
-  // ✅ DEFAULT (voor bijv. Voor-mij) – jouw “oude” card stijl
+  // ✅ DEFAULT
   return (
     <Link href={`/article/${article.id}`} className="block">
       <div className={containerClass}>
         <article className="bg-card rounded-lg overflow-hidden border border-border hover:border-muted transition-colors">
           {showImage && hasImg && (
-            <div className="aspect-video bg-secondary">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+            <div className="relative aspect-video bg-secondary">
               <Image
                 src={article.imageUrl}
                 alt={article.title}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 808px) 100vw, 808px"
+                className="object-cover"
               />
             </div>
           )}
 
-          <div className="p-4 space-y-3">
+          <div className="p-4 flex flex-col justify-center min-h-[96px] space-y-3">
             {(showLocation || article.isNew || article.isTrending) && (
               <div className="flex items-center gap-2 flex-wrap">
                 {showLocation ? (
