@@ -38,7 +38,7 @@ export function NewsCard({
                 {hasImg ? (
                   <Image
                     src={article.imageUrl}
-                    alt={article.title}
+                    alt=""
                     fill
                     sizes="(max-width: 808px) 100vw, 808px"
                     className="object-cover"
@@ -74,7 +74,7 @@ export function NewsCard({
                 {hasImg ? (
                   <Image
                     src={article.imageUrl}
-                    alt={article.title}
+                    alt=""
                     fill
                     sizes="80px"
                     className="object-cover"
@@ -116,7 +116,7 @@ export function NewsCard({
             <div className="relative aspect-video bg-secondary">
               <Image
                 src={article.imageUrl}
-                alt={article.title}
+                alt=""
                 fill
                 sizes="(max-width: 808px) 100vw, 808px"
                 className="object-cover"
