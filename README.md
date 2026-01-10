@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Omroep Brabant – Personalized News App (Prototype)
 
-## Getting Started
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![LocalStorage](https://img.shields.io/badge/LocalStorage-555555?style=for-the-badge)
+![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
 
-First, run the development server:
+---
+
+## 📰 Overview
+
+This project is a **front-end prototype** for Omroep Brabant, focused on **personalized regional news**. Users can configure their preferences based on **location, radius, and themes**, after which they receive a personalized news feed and a **weekly recap**.
+
+The main focus of this project is **UX design, front-end architecture, and personalization logic**. The backend is developed by another student; therefore, this prototype currently works with **mock data** that mirrors the structure of the expected backend API.
+
+---
+
+## ✨ Key Features
+
+- Intro flow before personalization
+- Location setup (manual region selection or live GPS location)
+- Radius-based filtering
+- Support for multiple saved locations (e.g. home, work)
+- Theme selection (News, Sports, Culture, etc.)
+- “For You” page with personalized articles
+- Weekly recap grouped by theme
+- User preferences stored client-side (localStorage)
+- Responsive layout inspired by Omroep Brabant styling
+
+---
+
+## 🖼️ Screenshot
+
+![App screenshot](public/img/readme/readme.png)
+
+_(Placeholder – can be replaced with an actual screenshot)_
+
+---
+
+## 🔧 Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/cindybruikman/ob-prototype.git
+cd ob-prototype
+```
+
+---
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the app in your browser:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+👉 [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🧠 Architecture & Data Flow
 
-To learn more about Next.js, take a look at the following resources:
+### Front-end stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js (App Router)**
+- **React + TypeScript**
+- **Tailwind CSS**
+- **LocalStorage** for persisting user preferences
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Data handling (prototype)
 
-## Deploy on Vercel
+- Articles are loaded from `mockDataBackend`
+- Backend-shaped data is converted to UI-friendly models via `mapBackendToUI`
+- User preferences are managed in `preferences.ts`
+- Article filtering happens fully client-side based on preferences
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> The application is prepared for real backend integration, but currently runs independently using mock data.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧪 Testing
+
+You can test different personalization scenarios by:
+
+- Switching between live location (GPS) and manual region selection
+- Adjusting the location radius
+- Selecting and deselecting themes
+- Checking how the **For You** page and **Weekly Recap** update accordingly
+
+---
+
+## 🛠 Available Scripts
+
+| Command         | Description                  |
+| --------------- | ---------------------------- |
+| `npm run dev`   | Start development server     |
+| `npm run build` | Build the app for production |
+| `npm run start` | Run the production build     |
+| `npm run lint`  | Lint the codebase            |
+
+---
+
+## 📌 Project Status
+
+This project is a **functional front-end prototype** developed as part of a graduation project. It demonstrates personalization logic, UX decisions, and scalable front-end structure, but is **not intended as a production-ready application**.
+
+---
+
+## 📄 License
+
+MIT License
