@@ -36,8 +36,6 @@ The main focus of this project is **UX design, front-end architecture, and perso
 
 ![App screenshot](public/img/readme.png)
 
-_(Placeholder – can be replaced with an actual screenshot)_
-
 ---
 
 ## 🔧 Setup Instructions
