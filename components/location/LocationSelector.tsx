@@ -470,12 +470,9 @@ export function LocationSelector({ onContinue }: Props) {
             <div className="space-y-2">
               <input
                 value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setShowRegionList(true);
-                }}
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Zoek regio…"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-[16px] sm:text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/30"
               />
 
               {showRegionList && (

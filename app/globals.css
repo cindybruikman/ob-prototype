@@ -53,3 +53,18 @@ body {
 .text-balance {
   text-wrap: balance;
 }
+
+/* iOS Safari: voorkom zoom op input focus */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+@media (min-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 14px; /* of wat je wilt op desktop */
+  }
+}
