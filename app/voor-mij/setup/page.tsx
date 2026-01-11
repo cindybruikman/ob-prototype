@@ -53,7 +53,6 @@ export default function VoorMijSetupIntroPage() {
             className="w-[220px] max-w-full h-auto"
           />
         </div>
-
         {/* Copy */}
         <div className="text-center space-y-3">
           <p className="text-sm text-muted-foreground">Vernieuwd!</p>
@@ -66,21 +65,18 @@ export default function VoorMijSetupIntroPage() {
             mis je nooit meer nieuws dat voor jou belangrijk is.
           </p>
         </div>
-
         {/* Toggle card */}
-        <div className="mt-6 bg-card border border-border rounded-xl p-4">
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-sm text-foreground">
+        <div className="mt-6 bg-card border border-border rounded-xl p-4 overflow-visible">
+          <div className="flex items-start justify-between gap-4">
+            <p className="text-sm text-foreground flex-1 min-w-0">
               Ik wil aanbevolen artikelen op basis van mijn leesgedrag.
             </p>
-
             <Switch
               checked={prefs.useReadingBehavior}
               onCheckedChange={toggleReading}
             />
           </div>
         </div>
-
         {/* Dots + CTA */}
         <div className="min-h-screen bg-background pb-24">
           {/* ... PageHeader + content ... */}
